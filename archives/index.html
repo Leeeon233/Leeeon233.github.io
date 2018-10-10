@@ -612,7 +612,7 @@
   
   <script type="text/javascript">
     var GUEST = ['nick','mail','link'];
-    var guest = 'nick,mail,link';
+    var guest = 'nick,mail';
     guest = guest.split(',').filter(function (item) {
       return GUEST.indexOf(item)>-1;
     });
@@ -626,7 +626,7 @@
         avatar:'mm',
         meta:guest,
         pageSize:'10' || 10,
-        visitor: false
+        visitor: true
     });
   </script>
 
