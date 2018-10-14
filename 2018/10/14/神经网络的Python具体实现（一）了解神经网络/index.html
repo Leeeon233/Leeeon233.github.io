@@ -119,18 +119,18 @@
 
 
 
-  <meta name="description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：）  神经网络Lorem ipsum dolor sit amet, consectetu">
+  <meta name="description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—-周志华《Deep learning》—-Ian G">
 <meta name="keywords" content="神经网络,python,感知机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="神经网络的Python具体实现（一）了解神经网络">
 <meta property="og:url" content="leeeon233.github.io/2018/10/14/神经网络的Python具体实现（一）了解神经网络/index.html">
 <meta property="og:site_name" content="Addicted to Learning">
-<meta property="og:description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：）  神经网络Lorem ipsum dolor sit amet, consectetu">
+<meta property="og:description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—-周志华《Deep learning》—-Ian G">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-14T10:39:39.540Z">
+<meta property="og:updated_time" content="2018-10-14T11:13:07.192Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络的Python具体实现（一）了解神经网络">
-<meta name="twitter:description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：）  神经网络Lorem ipsum dolor sit amet, consectetu">
+<meta name="twitter:description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—-周志华《Deep learning》—-Ian G">
 
 
 
@@ -350,7 +350,7 @@
                 
               
 
-              <time title="创建时间：2018-10-14 18:36:44 / 修改时间：18:39:39" itemprop="dateCreated datePublished" datetime="2018-10-14T18:36:44+08:00">2018-10-14</time>
+              <time title="创建时间：2018-10-14 18:36:44 / 修改时间：19:13:07" itemprop="dateCreated datePublished" datetime="2018-10-14T18:36:44+08:00">2018-10-14</time>
             
 
             
@@ -429,9 +429,17 @@
       
         <p>网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。</p>
 <p>本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：）</p>
+<p>推荐书籍与视频教程：<br>《机器学习》—-周志华<br>《Deep learning》—-Ian Goodfellow、Yoshua Bengio 和 Aaron Courville<br>李宏毅深度学习视频课程-<a href="https://www.youtube.com/playlist?list=PLJV_el3uVTsPMxPbjeX7PicgWbY7F8wW9" target="_blank" rel="noopener">youtube</a> <a href="https://www.bilibili.com/video/av9770302?from=search&amp;seid=352263311943028251" target="_blank" rel="noopener">Bilibili</a></p>
 <hr>
-<h1 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h1><blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nec tempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem.</p>
-</blockquote>
+<h1 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h1><blockquote><p>神经网络是由具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应。</p>
+<footer><strong>Kohonen</strong></footer></blockquote>
+<p>神经网络最基本的组成是神经元模型，每个神经元与其他神经元相连，神经元接受到来自 $n$ 个其他神经元传递过来的输入信号，这些信号通过带有权重的连接进行传递，神经元接收到的总输入值将于阈值进行比较，然后通过“激活函数”处理产生输出。把许多神经元按一定层次结构连接起来就得到了神经网络。</p>
+<h2 id="感知机模型"><a href="#感知机模型" class="headerlink" title="感知机模型"></a>感知机模型</h2><p>感知机模型由两层神经元组成，分别是输入层与输出层。</p>
+<div align="center">
+![感知机结构示意图](/images/mp-model.png =300x454)
+</div>
+
+
       
     </div>
 
@@ -682,7 +690,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#神经网络"><span class="nav-number">1.</span> <span class="nav-text">神经网络</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#神经网络"><span class="nav-number">1.</span> <span class="nav-text">神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#感知机模型"><span class="nav-number">1.1.</span> <span class="nav-text">感知机模型</span></a></li></ol></li></ol></div>
             
 
           </div>
