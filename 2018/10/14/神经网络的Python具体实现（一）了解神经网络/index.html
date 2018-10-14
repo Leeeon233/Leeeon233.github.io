@@ -119,18 +119,22 @@
 
 
 
-  <meta name="description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—-周志华《Deep learning》—-Ian G">
+  <meta name="description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—周志华《Deep learning》—Ian Goo">
 <meta name="keywords" content="神经网络,python,感知机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="神经网络的Python具体实现（一）了解神经网络">
 <meta property="og:url" content="leeeon233.github.io/2018/10/14/神经网络的Python具体实现（一）了解神经网络/index.html">
 <meta property="og:site_name" content="Addicted to Learning">
-<meta property="og:description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—-周志华《Deep learning》—-Ian G">
+<meta property="og:description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—周志华《Deep learning》—Ian Goo">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-14T11:13:07.192Z">
+<meta property="og:image" content="/images/mp-model.png">
+<meta property="og:image" content="/images/Perceptron.gif">
+<meta property="og:image" content="/images/muti-neural.png">
+<meta property="og:updated_time" content="2018-10-14T12:36:57.334Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络的Python具体实现（一）了解神经网络">
-<meta name="twitter:description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—-周志华《Deep learning》—-Ian G">
+<meta name="twitter:description" content="网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。 本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：） 推荐书籍与视频教程：《机器学习》—周志华《Deep learning》—Ian Goo">
+<meta name="twitter:image" content="/images/mp-model.png">
 
 
 
@@ -350,7 +354,7 @@
                 
               
 
-              <time title="创建时间：2018-10-14 18:36:44 / 修改时间：19:13:07" itemprop="dateCreated datePublished" datetime="2018-10-14T18:36:44+08:00">2018-10-14</time>
+              <time title="创建时间：2018-10-14 18:36:44 / 修改时间：20:36:57" itemprop="dateCreated datePublished" datetime="2018-10-14T18:36:44+08:00">2018-10-14</time>
             
 
             
@@ -429,16 +433,46 @@
       
         <p>网络上深度学习相关博客教程质量参差不齐，很多细节很少有文章提到，所以本着夯实深度学习基础的想法写下此系列博文。</p>
 <p>本文会从神经网络的概述、不同框架的公式推导和对应的基于numpy的Python代码实现等方面进行干货的讲解。如有不懂之处欢迎在评论留言，本人也初学机器学习与深度学习不久，有不足之处也请欢迎我联系。：）</p>
-<p>推荐书籍与视频教程：<br>《机器学习》—-周志华<br>《Deep learning》—-Ian Goodfellow、Yoshua Bengio 和 Aaron Courville<br>李宏毅深度学习视频课程-<a href="https://www.youtube.com/playlist?list=PLJV_el3uVTsPMxPbjeX7PicgWbY7F8wW9" target="_blank" rel="noopener">youtube</a> <a href="https://www.bilibili.com/video/av9770302?from=search&amp;seid=352263311943028251" target="_blank" rel="noopener">Bilibili</a></p>
+<p>推荐书籍与视频教程：<br>《机器学习》—周志华<br>《Deep learning》—Ian Goodfellow、Yoshua Bengio 和 Aaron Courville<br>李宏毅深度学习视频课程-<a href="https://www.youtube.com/playlist?list=PLJV_el3uVTsPMxPbjeX7PicgWbY7F8wW9" target="_blank" rel="noopener">youtube</a> <a href="https://www.bilibili.com/video/av9770302?from=search&amp;seid=352263311943028251" target="_blank" rel="noopener">Bilibili</a></p>
 <hr>
 <h1 id="神经网络"><a href="#神经网络" class="headerlink" title="神经网络"></a>神经网络</h1><blockquote><p>神经网络是由具有适应性的简单单元组成的广泛并行互连的网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应。</p>
-<footer><strong>Kohonen</strong></footer></blockquote>
+</blockquote>
 <p>神经网络最基本的组成是神经元模型，每个神经元与其他神经元相连，神经元接受到来自 $n$ 个其他神经元传递过来的输入信号，这些信号通过带有权重的连接进行传递，神经元接收到的总输入值将于阈值进行比较，然后通过“激活函数”处理产生输出。把许多神经元按一定层次结构连接起来就得到了神经网络。</p>
-<h2 id="感知机模型"><a href="#感知机模型" class="headerlink" title="感知机模型"></a>感知机模型</h2><p>感知机模型由两层神经元组成，分别是输入层与输出层。</p>
+<h2 id="感知机模型"><a href="#感知机模型" class="headerlink" title="感知机模型"></a>感知机模型</h2><p>感知机模型(Perceptron)由两层神经元组成，分别是输入层与输出层。</p>
 <div align="center">
-![感知机结构示意图](/images/mp-model.png =300x454)
+<img src="/images/mp-model.png" style="width: 400px" alt="感知机结构示意图">
+<p>感知机结构示意图</p>
 </div>
 
+<p>感知机模型是最为基础的网络结构，其计算形式如下</p>
+<script type="math/tex; mode=display">y=f\left(\sum_i\omega_ix_i+b\right)</script><p>其中 $f$ 为激活函数。我们先假设 $f$ 是阶跃函数(Step function)。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sign</span><span class="params">(out)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    y = sign(w·x + b)</span></span><br><span class="line"><span class="string">    :param out - the result of w·x + b</span></span><br><span class="line"><span class="string">    :return: y</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> out &gt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+<p>感知机的学习规则非常简单，对于训练样本 $(x,y)$，若当前感知机的输出为 $\hat{y}$，则感知机参数更新方式如下</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\omega &\leftarrow  \omega_i + \Delta\omega_i & \Delta\omega_i &= \eta\ (y-\hat{y})\ x_i \nonumber\\
+ \qquad& \nonumber\\
+ b_i &\leftarrow b_i + \Delta b_i & \Delta b_i &= \eta\  (y-\hat{y}) \nonumber
+\end{align}</script><p>其中 $\eta$ 称为学习率(learning rate)</p>
+<p>下面我们使用Python来实现感知机进行分类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化变量w,b</span></span><br><span class="line">w = np.zeros(shape=data[<span class="number">0</span>].shape)</span><br><span class="line">b = np.zeros(shape=label[<span class="number">0</span>].shape)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(x, y, learning_rate)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    当发现误分类点时，更新参数w,b.</span></span><br><span class="line"><span class="string">    更新方法：</span></span><br><span class="line"><span class="string">    w = w + learning_rate * x * y</span></span><br><span class="line"><span class="string">    b = b + learning_rate * y</span></span><br><span class="line"><span class="string">    :param x: 误分类点坐标</span></span><br><span class="line"><span class="string">    :param y: 误分类点正确分类标签</span></span><br><span class="line"><span class="string">    :return: None</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">global</span> w, b</span><br><span class="line">    w = w + learning_rate * x * y</span><br><span class="line">    b = b + learning_rate * y</span><br></pre></td></tr></table></figure>
+<p>假设训练集是线性可分的。更新过程便是，遍历全部的训练实例，通过感知机的计算方式计算出结果 $y$ 与对应标签进行比较(感知机标签一般为 1 和 -1)，如果误分便使用<code>updata()</code>进行参数更新。下图是感知机线性分类的拟合过程。</p>
+<div align="center">
+<img src="/images/Perceptron.gif" style="width: 500px" alt="感知机拟合过程">
+<p>感知机拟合过程</p>
+</div>
+
+<p>随意写的训练数据<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># x</span></span><br><span class="line">[[<span class="number">3.2</span>, <span class="number">0.8</span>], [<span class="number">5</span>, <span class="number">5</span>], [<span class="number">3</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">1</span>], [<span class="number">2</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="comment"># y</span></span><br><span class="line">[<span class="number">-1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>]</span><br></pre></td></tr></table></figure></p>
+<p>感知机只有输入层和输出层，且只有输出层神经元进行激活处理，即只有一层<strong>功能神经元</strong>，其学习能力非常有限。如果问题是非线性可分问题，那么感知机会发生振荡，无法收敛。</p>
+<h2 id="多层网络"><a href="#多层网络" class="headerlink" title="多层网络"></a>多层网络</h2><p>为了解决非线性可分问题，那么便需要采用多层功能神经元，如简单的两层感知机。如图</p>
+<div align="center">
+<img src="/images/muti-neural.png" style="width: 500px" alt="多层网络">
+<p>多层前馈神经网络</p>
+</div>
+
+<p>其中输入层与输出层之间一层被称为隐藏层(隐含层)，隐藏层和输出层都是拥有激活函数的功能神经元。<strong>一般情况下</strong>，隐藏层可以有多层，同层神经元之间不存在连接，也不存在跨层连接。这样的神经网络结构被称为<strong>多层前馈神经网络</strong>(multi-layer feedforward neural networks)</p>
+<p>因多层功能神经元的存在，多层网络的学习能力要强得多，同时简单的感知机学习规则显然已经无法满足要求。更强大的学习算法，误差逆传播(error BackPropagation)算法，即BP算法便是最成功的神经网络学习算法。</p>
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>在下一篇博文中，我们将使用BP算法来实现“<strong>全连接网络</strong>”。</p>
 
       
     </div>
@@ -690,7 +724,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#神经网络"><span class="nav-number">1.</span> <span class="nav-text">神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#感知机模型"><span class="nav-number">1.1.</span> <span class="nav-text">感知机模型</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#神经网络"><span class="nav-number">1.</span> <span class="nav-text">神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#感知机模型"><span class="nav-number">1.1.</span> <span class="nav-text">感知机模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多层网络"><span class="nav-number">1.2.</span> <span class="nav-text">多层网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TODO"><span class="nav-number">1.3.</span> <span class="nav-text">TODO</span></a></li></ol></li></ol></div>
             
 
           </div>
