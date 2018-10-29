@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="uYL04b15YwmqzU83rMBaoLZPFuMEGhAk1U0kHxD0k5k" />
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="MywpFVv35m" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.2" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.2">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.2">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.2" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.2',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":true,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在上一篇 神经网络的Numpy实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。如">
+<meta name="keywords" content="神经网络,python,梯度下降,全连接网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络的Python实现（二）全连接网络">
+<meta property="og:url" content="leeeon233.github.io/2018/10/29/神经网络的Python实现（二）全连接网络/index.html">
+<meta property="og:site_name" content="Addicted to Learning">
+<meta property="og:description" content="在上一篇 神经网络的Numpy实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。如">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="/images/fcn.jpg">
+<meta property="og:image" content="/images/sigmoid.jpg">
+<meta property="og:image" content="/images/tanh.jpg">
+<meta property="og:image" content="/images/relu.jpg">
+<meta property="og:image" content="/images/BP.jpg">
+<meta property="og:updated_time" content="2018-10-29T16:21:08.555Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="神经网络的Python实现（二）全连接网络">
+<meta name="twitter:description" content="在上一篇 神经网络的Numpy实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。如">
+<meta name="twitter:image" content="/images/fcn.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="leeeon233.github.io/2018/10/29/神经网络的Python实现（二）全连接网络/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>神经网络的Python实现（二）全连接网络 | Addicted to Learning</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Addicted to Learning</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="leeeon233.github.io/2018/10/29/神经网络的Python实现（二）全连接网络/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Leon">
+      <meta itemprop="description" content="Something on Machine Learning">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Addicted to Learning">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">神经网络的Python实现（二）全连接网络
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-10-29 23:22:30" itemprop="dateCreated datePublished" datetime="2018-10-29T23:22:30+08:00">2018-10-29</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-10-30 00:21:08" itemprop="dateModified" datetime="2018-10-30T00:21:08+08:00">2018-10-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/深度学习/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/29/神经网络的Python实现（二）全连接网络/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/10/29/神经网络的Python实现（二）全连接网络/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/10/29/神经网络的Python实现（二）全连接网络/" class="leancloud_visitors" data-flag-title="神经网络的Python实现（二）全连接网络">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在上一篇 <a href="https://leonzhao.cn/2018/10/14/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84Python%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89%E4%BA%86%E8%A7%A3%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">神经网络的Numpy实现（一）了解神经网络</a> 中，我们简单介绍了<strong>感知机模型</strong>和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。</p>
+<h1 id="全连接网络"><a href="#全连接网络" class="headerlink" title="全连接网络"></a>全连接网络</h1><p>首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。如下图便是一个简单的全连接网络：</p>
+<div align="center">
+<img src="/images/fcn.jpg" style="width: 500px" alt="全连接网络示意图">
+<p>全连接网络示意图</p>
+</div>
+
+<p>我们使用圆圈来表示神经网络的输入，标上 $+1$ 的圆圈被称为偏置节点，也就是截距项。神经网络最左边的一层叫做输入层，最右的一层叫做输出层（上图中，输出层只有一个节点）。中间所有节点组成的一层叫做隐藏层，因为我们不能在训练样本集中观测到它们的值。同时可以看到，以上神经网络的例子中有3个输入单元（偏置单元不计在内），3个隐藏单元及一个输出单元。</p>
+<p>我们用 $n_l$ 来表示网络的层数，上图例子中 $ n_l=3 $ ，我们将第 $ l $ 层记为  $ L_l$ ，于是 $L_1$ 是输入层，输出层是 $ L_{n_l}$ 。本例神经网络有参数 $ (W,b) = (W^{(1)}, b^{(1)}, W^{(2)}, b^{(2)})$ ，其中 $ W^{(l)}_{ij} $ 是第  $ l$ 层第 $ j $ 单元与第 $ l+1$ 层第 $i$  单元之间的联接参数（其实就是连接线上的权重，注意标号顺序）， $ b^{(l)}_i $ 是第 $ l+1$ 层第 $ i$ 单元的偏置项。因此在本例中， $ W^{(1)} \in \Re^{3\times 3}$ ， $ W^{(2)} \in \Re^{1\times 3}$  。注意，没有其他单元连向偏置单元(即偏置单元没有输入)，因为它们总是输出 $ +1 $。同时，我们用 $ s_l$ 表示第 $ l$ 层的节点数（偏置单元不计在内）。</p>
+<p>接下来详细介绍神经网络的前向和反向的计算过程。</p>
+<h2 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h2><p>我们用 $a^{(l)}_i$ 表示第 $l$ 层第  $i$ 单元的激活值（输出值）。当  $l=1$ 时， $a^{(1)}_i = x_i$ ，也就是第  $i$ 个输入值（输入值的第  $i$ 个特征）。对于给定参数集合  $W,b$ ，我们的神经网络就可以按照函数  $h_{W,b}(x)$ 来计算输出结果。本例神经网络的计算步骤如下：</p>
+<p>\begin{align}<br>a_1^{(2)} &amp;= f(W_{11}^{(1)}x_1 + W_{12}^{(1)} x_2 + W_{13}^{(1)} x_3 + b_1^{(1)}) \nonumber \\ \nonumber<br>a_2^{(2)} &amp;= f(W_{21}^{(1)}x_1 + W_{22}^{(1)} x_2 + W_{23}^{(1)} x_3 + b_2^{(1)})  \\ \nonumber<br>a_3^{(2)} &amp;= f(W_{31}^{(1)}x_1 + W_{32}^{(1)} x_2 + W_{33}^{(1)} x_3 + b_3^{(1)})  \\ \nonumber<br>h_{W,b}(x) &amp;= a_1^{(3)} =  f(W_{11}^{(2)}a_1^{(2)} + W_{12}^{(2)} a_2^{(2)} + W_{13}^{(2)} a_3^{(2)} + b_1^{(2)})  \nonumber<br>\end{align}</p>
+<p>我们用  $z^{(l)}_i$ 表示第  $l$ 层第  $i$ 单元输入加权和（包括偏置单元），比如，   <script type="math/tex">z_i^{(2)} = \sum_{j=1}^n W^{(1)}_{ij} x_j + b^{(1)}_i</script> 则 <script type="math/tex">a^{(l)}_i = f(z^{(l)}_i)</script></p>
+<p>这样我们就可以得到一种更简洁的表示法。这里我们将激活函数  $f(\cdot)$ 扩展为用向量（分量的形式）来表示，即  $f([z_1, z_2, z_3]) = [f(z_1), f(z_2), f(z_3)]$ ，那么，上面的等式可以更简洁地表示为：</p>
+<p>\begin{align}<br>z^{(2)} &amp;= W^{(1)} x + b^{(1)}\nonumber \\ \nonumber<br>a^{(2)} &amp;= f(z^{(2)}) \\ \nonumber<br>z^{(3)} &amp;= W^{(2)} a^{(2)} + b^{(2)} \\ \nonumber<br>h_{W,b}(x) &amp;= a^{(3)} = f(z^{(3)}) \nonumber<br>\end{align}</p>
+<p>我们将上面的计算步骤叫作<strong>前向传播</strong>。回想一下，之前我们用  $a^{(1)} = x$ 表示输入层的激活值，那么给定第  $l$ 层的激活值  $a^{(l)}$ 后，第  $l+1$ 层的激活值  $a^{(l+1)}$ 就可以按照下面步骤计算得到：</p>
+<p>\begin{align}<br>z^{(l+1)} &amp;= W^{(l)} a^{(l)} + b^{(l)}  \nonumber \\ \nonumber<br>a^{(l+1)} &amp;= f(z^{(l+1)}) \nonumber<br>\end{align}</p>
+<p>将参数矩阵化，使用矩阵－向量运算方式，我们就可以利用线性代数的优势对神经网络进行快速求解。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在python 3 numpy 中，矩阵相乘可以使用 a @ b</span></span><br><span class="line">z = activation(a @ w + b)</span><br></pre></td></tr></table></figure>
+<h3 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h3><p>在上面例子中 $f(\cdot)$ 便是激活函数，是神经网络中十分重要的一环。若没有激活函数，那么神经网络的输出便始终只是各个输入的线性组合。“深度”起不到作用。<br>所以激活函数的作用便是加入某种非线性的映射。早期经常使用的是Sigmoid函数，近几年多使用ReLU函数及其变体。下面介绍一下常见的激活函数及其导数。</p>
+<h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><div align="center">
+<img src="/images/sigmoid.jpg" style="width: 500px" alt="sigmoid">
+<p>Sigmoid</p>
+</div>
+
+<p>数学形式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+    f(z) &= \frac{1}{1+e^{-z}} \nonumber\\ \nonumber\\ \nonumber
+    f'(z) &= (\frac{1}{1+e^{-z}})' 
+    = \frac{e^{-z}}{(1+e^{-z})^{2}} \\ \nonumber\\ \nonumber
+    &= \frac{1+e^{-z}-1}{(1+e^{-z})^{2}}  
+    = \frac{1}{(1+e^{-z})}(1-\frac{1}{(1+e^{-z})}) \\\nonumber \\ \nonumber
+    &= f(z)\ (1-f(z)) \nonumber
+\end{align}</script><p>Sigmoid函数会将输入映射到(0,1)的范围，较大的值会被映射为1，较小的值会被映射为0。直观上符合神经元活跃与抑制状态的区分。</p>
+<p>缺点：</p>
+<ol>
+<li>如图，输入值的绝对值在4以上的情况下就基本趋于饱和了，达到1或0。在反向传播时，会造成由于梯度过小而产生权重更新缓慢甚至梯度消失。并且初始化权重时不可太大。</li>
+<li>Sigmoid函数的输出分布不是以0为中心分布的，在梯度下降过程中可能会存在梯度恒正或是恒负的情况出现。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(z)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">1.0</span> / (<span class="number">1.0</span> + np.exp(-x))</span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid_prime</span><span class="params">(z)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> sigmoid(z) * (<span class="number">1</span> - sigmoid(z))</span><br></pre></td></tr></table></figure>
+<h4 id="2-tanh"><a href="#2-tanh" class="headerlink" title="2. tanh"></a>2. tanh</h4><div align="center">
+<img src="/images/tanh.jpg" style="width: 500px" alt="tanh">
+<p>Tanh</p>
+</div>
+
+<p>数学形式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+f(z)&=\tanh(z)=\frac{\sinh(z)}{\cosh(z)}=\frac{e^z-e^{-z}}{e^z+e^{-z}}\nonumber\\ \nonumber\\ \nonumber
+f'(z) &= \frac{\cosh^2(z)-\sinh^2(z)}{\cosh^2(z)}=1 - f^2(z) \nonumber
+\end{align}</script><p>tanh函数会将输入映射到[-1,1]的范围，较大的值会被映射为1，较小的值会被映射为-1。</p>
+<p>缺点：类似于Sigmoid函数，也具有一定的激活饱和性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tanh</span><span class="params">(z)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> np.tanh(z)</span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tanh_prime</span><span class="params">(z)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span> - np.square(tanh(z))</span><br></pre></td></tr></table></figure>
+<h4 id="3-relu"><a href="#3-relu" class="headerlink" title="3. relu"></a>3. relu</h4><div align="center">
+<img src="/images/relu.jpg" style="width: 500px" alt="relu">
+<p>ReLU</p>
+</div>
+
+<p>数学形式</p>
+<script type="math/tex; mode=display">
+\begin{align}
+f(z) &=\max (0,z)\nonumber \\ \nonumber\\ \nonumber
+f'(z) &=
+\begin{cases}
+0& \text{z <= 0}\\ \nonumber
+1& \text{z > 0} \nonumber
+\end{cases}
+\end{align}</script><p>优点：</p>
+<ol>
+<li>计算速度快。求导简单。</li>
+<li>不再梯度弥散。ReLU函数不像Sigmoid函数，不存在梯度饱和区，几乎不会造成梯度弥散。</li>
+<li>减少过拟合。部分神经元输出可能为0，加大网络稀疏性，减少过拟合。</li>
+</ol>
+<p>缺点：初始化不佳会造成神经元死亡。针对此问题提出了Leaky ReLU、PReLU和RReLU等变体。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">relu</span><span class="params">(z)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> (np.abs(z) + z) / <span class="number">2</span></span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">relu_prime</span><span class="params">(z)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> np.where(z &gt; <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><p>当我们的输入数据经过神经网络，得到了一组输出数据。我们想去衡量我们的模型的好坏、给我们的模型一个得分或者说是我们想要优化的最终目标，便需要定义好<strong>损失函数</strong>。将我们的输出值与真实值通过损失函数进行计算，得到损失值(loss)，为了使得模型更好，能够与真实情况相拟合，所以我们需要找到一个适合的网络权重使得输出的loss最小。对于回归问题最常使用的损失函数是<strong>均方误差</strong>(Mean-Square Error,MSE)，对于分类问题最常使用的是<a href="https://zh.wikipedia.org/wiki/%E4%BA%A4%E5%8F%89%E7%86%B5" target="_blank" rel="noopener"><strong>交叉熵</strong></a>(Cross Entropy),这里仅简单介绍MSE。</p>
+<script type="math/tex; mode=display">MSE=\frac{1}{N}\sum_{i=1}^{N}(y_i-\hat{y_i })^2</script><blockquote>
+<p>均方误差是指参数估计值与参数真值之差平方的期望值;<br>MSE可以评价数据的变化程度，MSE的值越小，说明预测模型描述实验数据具有更好的精确度。</p>
+</blockquote>
+<h2 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h2><p>现在我们已经了解了全连接神经网络的<strong>前向传播</strong>和激活函数和其导数的数学表达，下面我们要使用反向传播算法进行最优参数(采用梯度下降法，可能造成局部最优)的求解。</p>
+<p>由于神经网络结构十分复杂，想要直接去求得权重的最优解是不大可能的。所以采用迭代的思想进行一步一步的权重更新，直到找到最佳的解。最常用的便是<strong>梯度下降法(gradient descent)</strong>。如果不了解梯度下降法，推荐观看Andrew Ng的机器学习<a href="https://www.bilibili.com/video/av9912938" target="_blank" rel="noopener">视频</a>。</p>
+<p>接下来假设你已经了解梯度下降法，现在我们来一起推导一下反向传播算法的公式，了解整个过程。这里采用下图简单的例子作为示范。很容易地可以扩展到任意宽度，任意深度的全连接网络上去。</p>
+<div align="center">
+<img src="/images/BP.jpg" style="width: 500px" alt="全连接网络示例">
+<p>全连接网络示例</p>
+</div>
+
+<p>假设我们的神经网络是一个输入层，有两个神经元；一个隐藏层，有两个神经元；一个输出层，有一个神经元。从图可以看到一共有6个权重需要我们计算。</p>
+<p><code>说明：接下来的激活函数都是sigmoid函数，均以 $f(·)$ 表示。小写字母表示未经激活函数的输出，大写字母表示通过激活函数的输出值。</code></p>
+<h3 id="隐藏层到输出层"><a href="#隐藏层到输出层" class="headerlink" title="隐藏层到输出层"></a>隐藏层到输出层</h3><p>数据通过神经网络得到了一个输出 $\hat{y}$ ，我们定义的损失函数为MSE，所以可以计算出当前的loss作为总误差(这里举例为一个输出神经元，如果有多个输出，总误差加和即可)。最后输出层这里我们不添加激活函数,所以 $\hat{y} = O_1$ 。</p>
+<script type="math/tex; mode=display">E = \frac{1}{2}\left(y - \hat{y}\right)^2 = \frac{1}{2}\left(y - O_1\right)^2</script><p>有了总误差，接下来我们就可以通过梯度下降法进行权重的更新。先来看隐藏层到输出层的权重 $w_5,w_6$ 。</p>
+<p>找到在前向传播时，有关 $w_5,w_6$ 的式子：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+O_1 &= f(o_1)\nonumber\\ 
+o_1 &= w_5H_1+w_6H_2+b_h \nonumber
+\end{align}</script><p>根据链式法则求出 $w_5,w_6$ 对于总误差的偏导：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial E}{\partial w_5} 
+&= \frac{\partial E}{\partial O_1}*\frac{\partial O_1}{\partial o_1}*\frac{\partial o_1}{\partial w_5} \nonumber\\ 
+&= -(y-o_1)*f'(o_1)*H_1 \nonumber\\ 
+&=-(y-o_1)*f(o_1)*\left(1-f(o_1)\right)*H_1 \nonumber
+\end{align}</script><p>同理可得：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial E}{\partial w_6} 
+&= \frac{\partial E}{\partial O_1}*\frac{\partial O_1}{\partial o_1}*\frac{\partial o_1}{\partial w_6} \nonumber\\ 
+&= -(y-o_1)*f'(o_1)*H_2\nonumber \\ 
+&=-(y-o_1)*f(o_1)*\left(1-f(o_1)\right)*H_2 \nonumber
+\end{align}</script><p>对于偏置项 $b_h$：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial E}{\partial b_h} 
+&= \frac{\partial E}{\partial O_1}*\frac{\partial O_1}{\partial o_1}*\frac{\partial o_1}{\partial b_h}\nonumber \\ 
+&= -(y-o_1)*f'(o_1)\nonumber \\ 
+&=-(y-o_1)*f(o_1)*\left(1-f(o_1)\right) \nonumber
+\end{align}</script><p>为了方便表示，我们把来自 $o_1$ 的误差表示为 $\delta o_1$，即：</p>
+<script type="math/tex; mode=display">\delta o_1 =\frac{\partial E}{\partial O_1}*\frac{\partial O_1}{\partial o_1} =  -(y-o_1)*f(o_1)*\left(1-f(o_1)\right)</script><p>整理后得到：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\delta_{w_5}&=\frac{\partial E}{\partial w_5} =  \delta o_1 * H_1 \nonumber\\ 
+\delta_{w_6}&=\frac{\partial E}{\partial w_6} =  \delta o_1 * H_2 \nonumber\\ 
+\delta_{b_h}&=\frac{\partial E}{\partial b_h} =  \delta o_1 \nonumber
+\end{align}</script><p>我们计算出来 $w_5.w_6,b_h$ 的偏导之后，就可以进行权重的更新了。（这里并不立刻更新，因前层进行反向传播时需要此层更新前的权重，下面会讲）</p>
+<script type="math/tex; mode=display">w_5 \leftarrow w_5 + \eta\nabla\delta_{w_5} \\w_6 \leftarrow w_6 + \eta\nabla\delta_{w_6}\\b_h \leftarrow b_h + \eta\nabla\delta_{b_h}</script><p>这里的 $ \eta $为学习率。</p>
+<h3 id="输入层到隐藏层"><a href="#输入层到隐藏层" class="headerlink" title="输入层到隐藏层"></a>输入层到隐藏层</h3><p>与隐藏层到输出层类似，只不过有小小的差别。<br>对于 $w_1,w_2,w_3,w_4,b_i$ ，只拿 $w_1$ 作为示范，其他的类似求解。</p>
+<p>首先列出前向传播时与 $w_1$ 有关的公式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+O_1 &= f(o_1)\nonumber\\
+o_1 &= w_5H_1+w_6H_2+b_h\nonumber\\
+H_1 &= f(h_1)\nonumber\\
+h_1 &= w_1x_1+w_3x_2+b_i\nonumber
+\end{align}</script><p>从上式可以看出，我们需要先求出$H_1$处的误差，进而求得 $w_1$ 的梯度。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial E}{\partial H_1} &= \frac{\partial E}{\partial O_1} * \frac{\partial O_1}{\partial o_1} * \frac{\partial o_1}{\partial H_1}\nonumber\\
+&=\delta o_1 * w_5\nonumber
+\end{align}</script><p><strong>这里便是上面提到的需要使用更新前的隐藏层到输出层的权重值</strong></p>
+<p>接下来便和隐藏层到输出层的反向传播没有差别了，以 $w_1$ 为例：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\frac{\partial E}{\partial w_1} 
+&= \frac{\partial E}{\partial H_1}*\frac{\partial H_1}{\partial h_1}*\frac{\partial h_1}{\partial w_1} \nonumber\\
+&= (\delta o_1 * w_5) * \left(f(h_1)*\left(1-f(h_1)\right) \right)* x_1\nonumber\\
+\end{align}</script><p>其他的权重和偏置项也根据公式进行类似的计算，并进行更新。</p>
+<p>至此反向传播便完成了，全部的权重得到了更新。下面我们根据上面的过程来编写代码。</p>
+<h2 id="CODE"><a href="#CODE" class="headerlink" title="CODE"></a>CODE</h2><h3 id="Layer类"><a href="#Layer类" class="headerlink" title="Layer类"></a>Layer类</h3><p>因为预计还要将CNN、RNN、LSTM等都采用numpy实现一遍，所以我们先定义一个<code>Layer</code>的基类。里面写一些，所有层都需要的函数，比如激活函数等。这里API形式仿照<strong>Keras</strong>。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> abc <span class="keyword">import</span> abstractmethod</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Layer</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_activation</span><span class="params">(self, name, x)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        激活函数</span></span><br><span class="line"><span class="string">        :param name: 激活函数的名称。</span></span><br><span class="line"><span class="string">        :param x:    激活函数的自变量。</span></span><br><span class="line"><span class="string">        :return:     返回激活函数计算得到的值</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> name == <span class="string">'sigmoid'</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1.0</span> / (<span class="number">1.0</span> + np.exp(-x))</span><br><span class="line">        <span class="keyword">elif</span> name == <span class="string">'tanh'</span>:</span><br><span class="line">            <span class="keyword">return</span> np.tanh(x)</span><br><span class="line">        <span class="keyword">elif</span> name == <span class="string">'relu'</span>:</span><br><span class="line">            <span class="keyword">return</span> (np.abs(x) + x) / <span class="number">2</span></span><br><span class="line">        <span class="keyword">elif</span> name == <span class="string">'none'</span>:   <span class="comment"># 不使用激活函数</span></span><br><span class="line">            <span class="keyword">return</span> x</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">"activation name wrong"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_activation_prime</span><span class="params">(self, name, x)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> name == <span class="string">'sigmoid'</span>:</span><br><span class="line">            <span class="keyword">return</span> self._activation(name, x) * (<span class="number">1</span> - self._activation(name, x))</span><br><span class="line">        <span class="keyword">elif</span> name == <span class="string">'tanh'</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span> - np.square(self._activation(name, x))</span><br><span class="line">        <span class="keyword">elif</span> name == <span class="string">'relu'</span>:</span><br><span class="line">            <span class="keyword">return</span> np.where(x &gt; <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">elif</span> name == <span class="string">'none'</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">"activation name wrong"</span>)</span><br><span class="line">            </span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward_propagation</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @abstractmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">back_propagation</span><span class="params">(self, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Dense层"><a href="#Dense层" class="headerlink" title="Dense层"></a>Dense层</h3><p>接下来我们开始编写<code>Dense</code>层。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Layer <span class="keyword">import</span> Layer</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DenseLayer</span><span class="params">(Layer)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, shape, activation, name)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Dense层初始化。</span></span><br><span class="line"><span class="string">        :param shape:       如输入神经元有2个，输出神经元有3个。那么shape = (2,3)</span></span><br><span class="line"><span class="string">        :param activation:  激活函数名称</span></span><br><span class="line"><span class="string">        :param name:        当前层的名称</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        super().__init__()</span><br><span class="line">        self.shape = shape</span><br><span class="line">        self.activation_name = activation</span><br><span class="line">        self.__name = name</span><br><span class="line">        self.__w = <span class="number">2</span> * np.random.randn(self.shape[<span class="number">0</span>], self.shape[<span class="number">1</span>]) <span class="comment"># 这里采用矩阵的随机初始化</span></span><br><span class="line">        self.__b = np.random.randn(<span class="number">1</span>, shape[<span class="number">1</span>])                      </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward_propagation</span><span class="params">(self, _input)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Dense层的前向传播实现</span></span><br><span class="line"><span class="string">        :param _input: 输入的数据，即前一层的输出</span></span><br><span class="line"><span class="string">        :return:       通过激活函数后的输出</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.__input = _input</span><br><span class="line">        self.__output = self._activation(self.activation_name, self.__input.dot(self.__w) + self.__b)</span><br><span class="line">        <span class="keyword">return</span> self.__output</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">back_propagation</span><span class="params">(self, error, learning_rate)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        Dense层的反向传播</span></span><br><span class="line"><span class="string">        :param error:           后一层传播过来的误差</span></span><br><span class="line"><span class="string">        :param learning_rate:   学习率</span></span><br><span class="line"><span class="string">        :return:                传播给前一层的误差</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        o_delta = np.matrix(error * self._activation_prime(self.activation_name, self.__output))</span><br><span class="line">        w_delta = np.matrix(self.__input).T.dot(o_delta)</span><br><span class="line">        input_delta = o_delta.dot(self.__w.T)</span><br><span class="line">        self.__w -= w_delta * learning_rate</span><br><span class="line">        self.__b -= o_delta * learning_rate</span><br><span class="line">        <span class="keyword">return</span> input_delta</span><br></pre></td></tr></table></figure>
+<h3 id="Model类"><a href="#Model类" class="headerlink" title="Model类"></a>Model类</h3><p>接着写一个<code>Model</code>类实现Keras的各种API</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Model</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        简单使用列表按顺序存放各层</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.layers = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(self, layer)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        向模型中添加一层</span></span><br><span class="line"><span class="string">        :param layer:  添加的Layer</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.layers.append(layer)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X, y, learning_rate, epochs)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        训练</span></span><br><span class="line"><span class="string">        :param X:                   训练集数据</span></span><br><span class="line"><span class="string">        :param y:                   训练集标签</span></span><br><span class="line"><span class="string">        :param learning_rate:       学习率</span></span><br><span class="line"><span class="string">        :param epochs:              全部数据集学习的轮次</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> self.__loss_function <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">"compile first"</span>)</span><br><span class="line">        <span class="comment"># 前馈</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(epochs):</span><br><span class="line">            loss = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> num <span class="keyword">in</span> range(len(X)):</span><br><span class="line">                out = X[num]</span><br><span class="line">                <span class="keyword">for</span> layer <span class="keyword">in</span> self.layers:</span><br><span class="line">                    out = layer.forward_propagation(out)</span><br><span class="line">                loss += self.__loss_function(out, y[num], <span class="keyword">True</span>)</span><br><span class="line">                error = self.__loss_function(out, y[num], <span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> range(len(self.layers)):</span><br><span class="line">                    index = len(self.layers) - j - <span class="number">1</span></span><br><span class="line">                    error = self.layers[index].back_propagation(error, learning_rate)</span><br><span class="line">            print(<span class="string">"epochs &#123;&#125; / &#123;&#125;  loss : &#123;&#125;"</span>.format(i + <span class="number">1</span>, epochs, loss/len(X)))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">compile</span><span class="params">(self, loss_function)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        编译，目前仅设置损失函数</span></span><br><span class="line"><span class="string">        :param loss_function:  损失函数的名称</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> loss_function == <span class="string">'mse'</span>:</span><br><span class="line">            self.__loss_function = self.__mse</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__mse</span><span class="params">(self, output, y, forward)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :param output:      预测值</span></span><br><span class="line"><span class="string">        :param y:           真实值</span></span><br><span class="line"><span class="string">        :param forward:     是否是前向传播过程</span></span><br><span class="line"><span class="string">        :return:            loss值</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> forward:</span><br><span class="line">            <span class="keyword">return</span> np.squeeze(<span class="number">0.5</span> * ((output - y) ** <span class="number">2</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> output - y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, X)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        结果预测</span></span><br><span class="line"><span class="string">        :param X: 测试集数据</span></span><br><span class="line"><span class="string">        :return:  对测试集数据的预测</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        res = []</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> range(len(X)):</span><br><span class="line">            out = X[num]</span><br><span class="line">            <span class="keyword">for</span> layer <span class="keyword">in</span> self.layers:</span><br><span class="line">                out = layer.forward_propagation(out)</span><br><span class="line">            res.append(out)</span><br><span class="line">        <span class="keyword">return</span> np.np.squeeze(np.array(res))</span><br></pre></td></tr></table></figure>
+<h3 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h3><p>最后我们来写一个主函数简单拟合异或测试一下全连接网络。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Dense <span class="keyword">import</span> DenseLayer</span><br><span class="line"><span class="keyword">import</span> Model</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    model = Model.Model()</span><br><span class="line">    X = np.array([</span><br><span class="line">      [<span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">      [<span class="number">1</span>, <span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">      [<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">    ])</span><br><span class="line">    y = np.array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>])</span><br><span class="line">    model.add(Dense((<span class="number">2</span>, <span class="number">3</span>), <span class="string">'sigmoid'</span>, <span class="string">'dense1'</span>))</span><br><span class="line">    model.add(Dense((<span class="number">3</span>, <span class="number">4</span>), <span class="string">'sigmoid'</span>, <span class="string">'dense2'</span>))</span><br><span class="line">    model.add(Dense((<span class="number">4</span>, <span class="number">1</span>), <span class="string">'none'</span>, <span class="string">'output'</span>))</span><br><span class="line">    model.compile(<span class="string">'mse'</span>)</span><br><span class="line">    model.fit(X, y, <span class="number">0.1</span>, <span class="number">1000</span>)</span><br><span class="line">    print(model.predict([[<span class="number">1</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">0</span>]]))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>epochs 1 / 1000  loss : 1.5461586301292716<br>epochs 2 / 1000  loss : 1.0010336204321242<br>epochs 3 / 1000  loss : 0.8421754635331838<br>epochs 4 / 1000  loss : 0.7311597301044074<br>epochs 5 / 1000  loss : 0.6428097142979868<br>epochs 6 / 1000  loss : 0.5709843947151808<br>epochs 7 / 1000  loss : 0.5122654038390013<br>epochs 8 / 1000  loss : 0.4640985740577866<br>epochs 9 / 1000  loss : 0.4244527616264729<br>epochs 10 / 1000  loss : 0.39169518752811794<br>···<br>epochs 995 / 1000  loss : 0.0018694401858458181<br>epochs 996 / 1000  loss : 0.0018245697992101736<br>epochs 997 / 1000  loss : 0.001780665685232114<br>epochs 998 / 1000  loss : 0.0017377108735277388<br>epochs 999 / 1000  loss : 0.0016956885636446625<br>epochs 1000 / 1000  loss : 0.001654582127688094<br>···<br>[0.0610148 0.98877437]</p>
+</blockquote>
+<p>可见模型是能够收敛，并且拟合非线性映射的。</p>
+<center><font size="4">如果你有某些疑问或是改进，欢迎留下你的评论。</font></center>
+
+<h2 id="TODO"><a href="#TODO" class="headerlink" title="TODO"></a>TODO</h2><p>现在我们实现了全连接神经网络，在下一篇博文我们将会继续推导和实现最为常用而且是最为复杂的<strong>卷积神经网络</strong>（CNN）。</p>
+<h1 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h1><p>感谢以下博客和网站<br>[1] <a href="http://ufldl.stanford.edu/wiki/index.php/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C" target="_blank" rel="noopener">神经网络 - Ufldl</a><br>[2] <a href="https://blog.csdn.net/zhaomengszu/article/details/77834845" target="_blank" rel="noopener">大白话讲解BP算法</a><br>[3] <a href="https://keras.io/zh" target="_blank" rel="noopener">Keras</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果您觉得文章有帮助到您，欢迎打赏。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="Leon 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="Leon 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Leon</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="leeeon233.github.io/2018/10/29/神经网络的Python实现（二）全连接网络/" title="神经网络的Python实现（二）全连接网络">leeeon233.github.io/2018/10/29/神经网络的Python实现（二）全连接网络/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/神经网络/" rel="tag"># 神经网络</a>
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+            <a href="/tags/梯度下降/" rel="tag"># 梯度下降</a>
+          
+            <a href="/tags/全连接网络/" rel="tag"># 全连接网络</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/14/神经网络的Python实现（一）了解神经网络/" rel="next" title="神经网络的Python实现（一）了解神经网络">
+                <i class="fa fa-chevron-left"></i> 神经网络的Python实现（一）了解神经网络
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="Leon" />
+            
+              <p class="site-author-name" itemprop="name">Leon</p>
+              <p class="site-description motion-element" itemprop="description">Something on Machine Learning</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/leeeon233" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:leeeon233@gmail.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#全连接网络"><span class="nav-number">1.</span> <span class="nav-text">全连接网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前向传播"><span class="nav-number">1.1.</span> <span class="nav-text">前向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#激活函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">激活函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-sigmoid"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">1. sigmoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-tanh"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">2. tanh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-relu"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">3. relu</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#损失函数"><span class="nav-number">1.1.2.</span> <span class="nav-text">损失函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反向传播"><span class="nav-number">1.2.</span> <span class="nav-text">反向传播</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏层到输出层"><span class="nav-number">1.2.1.</span> <span class="nav-text">隐藏层到输出层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入层到隐藏层"><span class="nav-number">1.2.2.</span> <span class="nav-text">输入层到隐藏层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CODE"><span class="nav-number">1.3.</span> <span class="nav-text">CODE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Layer类"><span class="nav-number">1.3.1.</span> <span class="nav-text">Layer类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dense层"><span class="nav-number">1.3.2.</span> <span class="nav-text">Dense层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Model类"><span class="nav-number">1.3.3.</span> <span class="nav-text">Model类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Main"><span class="nav-number">1.3.4.</span> <span class="nav-text">Main</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TODO"><span class="nav-number">1.4.</span> <span class="nav-text">TODO</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考内容"><span class="nav-number">2.</span> <span class="nav-text">参考内容</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leon</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a> 强力驱动 v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a class="theme-link" target="_blank" rel="external nofollow" href="https://theme-next.org">NexT.Pisces</a> v6.4.2</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/reading_progress/reading_progress.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.2"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  
+  
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'CPKJnpnoRWzvUQth2aQrP1Ul-gzGzoHsz',
+        appKey: 'mOdVuO7nTdfoeR15niLrefhJ',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        meta:guest,
+        pageSize:'10' || 10,
+        visitor: true
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      TeX: {equationNumbers: { autoNumber: "AMS" }}
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function (i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap')
+      $(e).after($wrap)
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function (e) {
+        var code = $(this).parent().find('.code').find('.line').map(function (i, e) {
+          return $(e).text()
+        }).toArray().join('\n')
+        var ta = document.createElement('textarea')
+        document.body.appendChild(ta)
+        ta.style.position = 'absolute'
+        ta.style.top = '0px'
+        ta.style.left = '0px'
+        ta.value = code
+        ta.select()
+        ta.focus()
+        var result = document.execCommand('copy')
+        document.body.removeChild(ta)
+        
+          if(result)$(this).text('复制成功')
+          else $(this).text('复制失败')
+        
+        $(this).blur()
+      })).on('mouseleave', function (e) {
+        var $b = $(this).find('.copy-btn')
+        setTimeout(function () {
+          $b.text('复制')
+        }, 300)
+      }).append(e)
+    })
+  </script>
+
+
+</body>
+</html>
