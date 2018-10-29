@@ -119,23 +119,23 @@
 
 
 
-  <meta name="description" content="在上一篇 神经网络的Numpy实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。如">
+  <meta name="description" content="在上一篇 神经网络的Python实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。">
 <meta name="keywords" content="神经网络,python,梯度下降,全连接网络">
 <meta property="og:type" content="article">
 <meta property="og:title" content="神经网络的Python实现（二）全连接网络">
 <meta property="og:url" content="leeeon233.github.io/2018/10/29/神经网络的Python实现（二）全连接网络/index.html">
 <meta property="og:site_name" content="Addicted to Learning">
-<meta property="og:description" content="在上一篇 神经网络的Numpy实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。如">
+<meta property="og:description" content="在上一篇 神经网络的Python实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="/images/fcn.jpg">
 <meta property="og:image" content="/images/sigmoid.jpg">
 <meta property="og:image" content="/images/tanh.jpg">
 <meta property="og:image" content="/images/relu.jpg">
 <meta property="og:image" content="/images/BP.jpg">
-<meta property="og:updated_time" content="2018-10-29T16:23:09.638Z">
+<meta property="og:updated_time" content="2018-10-29T17:50:17.488Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络的Python实现（二）全连接网络">
-<meta name="twitter:description" content="在上一篇 神经网络的Numpy实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。如">
+<meta name="twitter:description" content="在上一篇 神经网络的Python实现（一）了解神经网络 中，我们简单介绍了感知机模型和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。 全连接网络首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。">
 <meta name="twitter:image" content="/images/fcn.jpg">
 
 
@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-10-30 00:23:09" itemprop="dateModified" datetime="2018-10-30T00:23:09+08:00">2018-10-30</time>
+                <time title="修改时间：2018-10-30 01:50:17" itemprop="dateModified" datetime="2018-10-30T01:50:17+08:00">2018-10-30</time>
               
             
           </span>
@@ -447,7 +447,7 @@
       
 
       
-        <p>在上一篇 <a href="https://leonzhao.cn/2018/10/14/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84Python%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89%E4%BA%86%E8%A7%A3%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">神经网络的Numpy实现（一）了解神经网络</a> 中，我们简单介绍了<strong>感知机模型</strong>和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。</p>
+        <p>在上一篇 <a href="https://leonzhao.cn/2018/10/14/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84Python%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%B8%80%EF%BC%89%E4%BA%86%E8%A7%A3%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">神经网络的Python实现（一）了解神经网络</a> 中，我们简单介绍了<strong>感知机模型</strong>和多层网络的基础结构。在这篇博文中，我们将使用python-numpy库搭建多层神经网络模型、介绍和实现BP算法。理论部分有部分参考。</p>
 <h1 id="全连接网络"><a href="#全连接网络" class="headerlink" title="全连接网络"></a>全连接网络</h1><p>首先，简单介绍一下全连接网络(Fully-Connected Network)，即在多层神经网络中，第 $n$ 层的每个神经元都分别与第 $n-1$ 层的神经元相互连接。如下图便是一个简单的全连接网络：</p>
 <div align="center">
 <img src="/images/fcn.jpg" style="width: 500px" alt="全连接网络示意图">
@@ -458,13 +458,26 @@
 <p>我们用 $n_l$ 来表示网络的层数，上图例子中 $ n_l=3 $ ，我们将第 $ l $ 层记为  $ L_l$ ，于是 $L_1$ 是输入层，输出层是 $ L_{n_l}$ 。本例神经网络有参数 $ (W,b) = (W^{(1)}, b^{(1)}, W^{(2)}, b^{(2)})$ ，其中 $ W^{(l)}_{ij} $ 是第  $ l$ 层第 $ j $ 单元与第 $ l+1$ 层第 $i$  单元之间的联接参数（其实就是连接线上的权重，注意标号顺序）， $ b^{(l)}_i $ 是第 $ l+1$ 层第 $ i$ 单元的偏置项。因此在本例中， $ W^{(1)} \in \Re^{3\times 3}$ ， $ W^{(2)} \in \Re^{1\times 3}$  。注意，没有其他单元连向偏置单元(即偏置单元没有输入)，因为它们总是输出 $ +1 $。同时，我们用 $ s_l$ 表示第 $ l$ 层的节点数（偏置单元不计在内）。</p>
 <p>接下来详细介绍神经网络的前向和反向的计算过程。</p>
 <h2 id="前向传播"><a href="#前向传播" class="headerlink" title="前向传播"></a>前向传播</h2><p>我们用 $a^{(l)}_i$ 表示第 $l$ 层第  $i$ 单元的激活值（输出值）。当  $l=1$ 时， $a^{(1)}_i = x_i$ ，也就是第  $i$ 个输入值（输入值的第  $i$ 个特征）。对于给定参数集合  $W,b$ ，我们的神经网络就可以按照函数  $h_{W,b}(x)$ 来计算输出结果。本例神经网络的计算步骤如下：</p>
-<p>\begin{align}<br>a_1^{(2)} &amp;= f(W_{11}^{(1)}x_1 + W_{12}^{(1)} x_2 + W_{13}^{(1)} x_3 + b_1^{(1)}) \nonumber \\ \nonumber<br>a_2^{(2)} &amp;= f(W_{21}^{(1)}x_1 + W_{22}^{(1)} x_2 + W_{23}^{(1)} x_3 + b_2^{(1)})  \\ \nonumber<br>a_3^{(2)} &amp;= f(W_{31}^{(1)}x_1 + W_{32}^{(1)} x_2 + W_{33}^{(1)} x_3 + b_3^{(1)})  \\ \nonumber<br>h_{W,b}(x) &amp;= a_1^{(3)} =  f(W_{11}^{(2)}a_1^{(2)} + W_{12}^{(2)} a_2^{(2)} + W_{13}^{(2)} a_3^{(2)} + b_1^{(2)})  \nonumber<br>\end{align}</p>
-<p>我们用  $z^{(l)}_i$ 表示第  $l$ 层第  $i$ 单元输入加权和（包括偏置单元），比如，   <script type="math/tex">z_i^{(2)} = \sum_{j=1}^n W^{(1)}_{ij} x_j + b^{(1)}_i</script> 则 <script type="math/tex">a^{(l)}_i = f(z^{(l)}_i)</script></p>
+<script type="math/tex; mode=display">
+\begin{align}
+a_1^{(2)} &= f(W_{11}^{(1)}x_1 + W_{12}^{(1)} x_2 + W_{13}^{(1)} x_3 + b_1^{(1)}) \nonumber \\ \nonumber
+a_2^{(2)} &= f(W_{21}^{(1)}x_1 + W_{22}^{(1)} x_2 + W_{23}^{(1)} x_3 + b_2^{(1)})  \\ \nonumber
+a_3^{(2)} &= f(W_{31}^{(1)}x_1 + W_{32}^{(1)} x_2 + W_{33}^{(1)} x_3 + b_3^{(1)})  \\ \nonumber
+h_{W,b}(x) &= a_1^{(3)} =  f(W_{11}^{(2)}a_1^{(2)} + W_{12}^{(2)} a_2^{(2)} + W_{13}^{(2)} a_3^{(2)} + b_1^{(2)})  \nonumber
+\end{align}</script><p>我们用  $z^{(l)}_i$ 表示第  $l$ 层第  $i$ 单元输入加权和（包括偏置单元），比如，   <script type="math/tex">z_i^{(2)} = \sum_{j=1}^n W^{(1)}_{ij} x_j + b^{(1)}_i</script> 则 <script type="math/tex">a^{(l)}_i = f(z^{(l)}_i)</script></p>
 <p>这样我们就可以得到一种更简洁的表示法。这里我们将激活函数  $f(\cdot)$ 扩展为用向量（分量的形式）来表示，即  $f([z_1, z_2, z_3]) = [f(z_1), f(z_2), f(z_3)]$ ，那么，上面的等式可以更简洁地表示为：</p>
-<p>\begin{align}<br>z^{(2)} &amp;= W^{(1)} x + b^{(1)}\nonumber \\ \nonumber<br>a^{(2)} &amp;= f(z^{(2)}) \\ \nonumber<br>z^{(3)} &amp;= W^{(2)} a^{(2)} + b^{(2)} \\ \nonumber<br>h_{W,b}(x) &amp;= a^{(3)} = f(z^{(3)}) \nonumber<br>\end{align}</p>
-<p>我们将上面的计算步骤叫作<strong>前向传播</strong>。回想一下，之前我们用  $a^{(1)} = x$ 表示输入层的激活值，那么给定第  $l$ 层的激活值  $a^{(l)}$ 后，第  $l+1$ 层的激活值  $a^{(l+1)}$ 就可以按照下面步骤计算得到：</p>
-<p>\begin{align}<br>z^{(l+1)} &amp;= W^{(l)} a^{(l)} + b^{(l)}  \nonumber \\ \nonumber<br>a^{(l+1)} &amp;= f(z^{(l+1)}) \nonumber<br>\end{align}</p>
-<p>将参数矩阵化，使用矩阵－向量运算方式，我们就可以利用线性代数的优势对神经网络进行快速求解。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+z^{(2)} &= W^{(1)} x + b^{(1)}\nonumber \\ \nonumber
+a^{(2)} &= f(z^{(2)}) \\ \nonumber
+z^{(3)} &= W^{(2)} a^{(2)} + b^{(2)} \\ \nonumber
+h_{W,b}(x) &= a^{(3)} = f(z^{(3)}) \nonumber
+\end{align}</script><p>我们将上面的计算步骤叫作<strong>前向传播</strong>。回想一下，之前我们用  $a^{(1)} = x$ 表示输入层的激活值，那么给定第  $l$ 层的激活值  $a^{(l)}$ 后，第  $l+1$ 层的激活值  $a^{(l+1)}$ 就可以按照下面步骤计算得到：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+z^{(l+1)} &= W^{(l)} a^{(l)} + b^{(l)}  \nonumber \\ \nonumber
+a^{(l+1)} &= f(z^{(l+1)}) \nonumber
+\end{align}</script><p>将参数矩阵化，使用矩阵－向量运算方式，我们就可以利用线性代数的优势对神经网络进行快速求解。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在python 3 numpy 中，矩阵相乘可以使用 a @ b</span></span><br><span class="line">z = activation(a @ w + b)</span><br></pre></td></tr></table></figure>
 <h3 id="激活函数"><a href="#激活函数" class="headerlink" title="激活函数"></a>激活函数</h3><p>在上面例子中 $f(\cdot)$ 便是激活函数，是神经网络中十分重要的一环。若没有激活函数，那么神经网络的输出便始终只是各个输入的线性组合。“深度”起不到作用。<br>所以激活函数的作用便是加入某种非线性的映射。早期经常使用的是Sigmoid函数，近几年多使用ReLU函数及其变体。下面介绍一下常见的激活函数及其导数。</p>
 <h4 id="1-sigmoid"><a href="#1-sigmoid" class="headerlink" title="1. sigmoid"></a>1. sigmoid</h4><div align="center">
