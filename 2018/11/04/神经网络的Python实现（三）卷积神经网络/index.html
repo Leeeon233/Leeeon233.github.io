@@ -132,7 +132,7 @@
 <meta property="og:image" content="/images/same.gif">
 <meta property="og:image" content="/images/channels.gif">
 <meta property="og:image" content="/images/channels2.jpg">
-<meta property="og:updated_time" content="2018-11-03T17:50:26.790Z">
+<meta property="og:updated_time" content="2018-11-04T05:54:41.735Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络的Python实现（三）卷积神经网络">
 <meta name="twitter:description" content="推荐在我的博客中给我留言，这样我会随时收到你的评论，并作出回复。  在上一篇神经网络的Python实现（二）全连接网络中，已经介绍了神经网络的部分激活函数，损失函数和全连接网络的前馈和反向传播公式及Numpy实现。这篇博文将要详细介绍卷积神经网络的概念，并且进行前馈和反向传播的公式推导及Numpy实现。 卷积神经网络卷积神经网络（Convolutional Neural Network）非常擅于处">
@@ -358,7 +358,7 @@
                 
               
 
-              <time title="创建时间：2018-11-04 01:10:58 / 修改时间：01:50:26" itemprop="dateCreated datePublished" datetime="2018-11-04T01:10:58+08:00">2018-11-04</time>
+              <time title="创建时间：2018-11-04 01:10:58 / 修改时间：13:54:41" itemprop="dateCreated datePublished" datetime="2018-11-04T01:10:58+08:00">2018-11-04</time>
             
 
             
@@ -577,7 +577,7 @@ a^{(l)} &= \sigma(z^{l})=\sigma(W^{(l)} a^{(l-1)} + b^{(l)})
 <ol>
 <li>定义好卷积核数目，卷积核大小，步长和填充方式。根据输入大小，计算输出大小并进行相应的padding，得到了卷积层的输入 $a^{l-1}$ 。</li>
 <li>初始化所有卷积和的权重 $W$ 和偏置 $b$ </li>
-<li>根据前向传播的公式（M个通道）：<script type="math/tex; mode=display">a^l= \sigma(z^l) = \sigma(\sum\limits_{k=1}^{M}z_k^l) = \sigma(\sum\limits_{k=1}^{M}a_k^{l-1}*W_k^l +b^l)</script>即<script type="math/tex; mode=display">a^l= \sigma(z^l) = \sigma(W^la^{l-1} +b^l)</script>计算出卷积层输出，其中$*$是卷积运算、$\sigma$是激活函数。</li>
+<li>根据前向传播的公式（M个通道）：<script type="math/tex; mode=display">a^l= \sigma(z^l) = \sigma(\sum\limits_{k=1}^{M}z_k^l) = \sigma(\sum\limits_{k=1}^{M}a_k^{l-1}*W_k^l +b^l)</script>即<script type="math/tex; mode=display">a^l= \sigma(z^l) = \sigma(a^{l-1}*W^l +b^l)</script>计算出卷积层输出，其中$*$是卷积运算、$\sigma$是激活函数。</li>
 </ol>
 <h2 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h2><p>现在已知卷积层的 $\delta^l$ ，我们通过反向传播算法来计算上一层的 $\delta^{l-1}$ 。<br>我们也先回顾一下反向传播公式，根据链式法则：</p>
 <script type="math/tex; mode=display">\delta^{l-1} = \frac{\partial J(W,b)}{\partial z^{l-1}} = \frac{\partial J(W,b)}{\partial z^{l}}\frac{\partial z^{l}}{\partial z^{l-1}} = \delta^{l}\frac{\partial z^{l}}{\partial z^{l-1}}</script><p>要计算$\delta^l$的值，必须知道$\frac{\partial z^{l}}{\partial z^{l-1}}$的值，所以根据前向传播公式：</p>
