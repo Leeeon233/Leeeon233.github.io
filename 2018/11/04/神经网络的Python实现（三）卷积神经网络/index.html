@@ -132,7 +132,7 @@
 <meta property="og:image" content="/images/same.gif">
 <meta property="og:image" content="/images/channels.gif">
 <meta property="og:image" content="/images/channels2.jpg">
-<meta property="og:updated_time" content="2018-11-29T15:43:57.113Z">
+<meta property="og:updated_time" content="2018-11-29T15:47:12.729Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络的Python实现（三）卷积神经网络">
 <meta name="twitter:description" content="推荐在我的博客中给我留言，这样我会随时收到你的评论，并作出回复。  在上一篇神经网络的Python实现（二）全连接网络中，已经介绍了神经网络的部分激活函数，损失函数和全连接网络的前馈和反向传播公式及Numpy实现。这篇博文将要详细介绍卷积神经网络的概念，并且进行前馈和反向传播的公式推导及Numpy实现。 卷积神经网络卷积神经网络（Convolutional Neural Network）非常擅于处">
@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-29 23:43:57" itemprop="dateModified" datetime="2018-11-29T23:43:57+08:00">2018-11-29</time>
+                <time title="修改时间：2018-11-29 23:47:12" itemprop="dateModified" datetime="2018-11-29T23:47:12+08:00">2018-11-29</time>
               
             
           </span>
@@ -762,7 +762,6 @@ a_{41} & a_{42} & a_{43} & a_{44}
 \nabla w_{21} &\nabla  w_{22} 
 \end{matrix}
 \right]</script><p>对于$b$就把对应卷积核的误差求和便可。至此，卷积层的反向传播就结束了。</p>
-<p>至此，卷积层的反向传播就结束了。</p>
 <p>下面我们使用<strong>Numpy</strong>来实现卷积层的前向和反向传播。</p>
 <h2 id="CODE"><a href="#CODE" class="headerlink" title="CODE"></a>CODE</h2><p>代码是在上一篇<a href="https://leonzhao.cn/2018/10/29/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%9A%84Python%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%BA%8C%EF%BC%89%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C/" target="_blank" rel="noopener">全连接网络</a>基础上增加的，继承自<code>Layer</code>类，使得不同类型的层可以叠加成网络。</p>
 <h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><p>首先我们定义一个卷积核类，用来实现每个卷积核的卷积计算和前向传播反向传播。</p>
