@@ -120,7 +120,7 @@
 
 
   <meta name="description" content="推荐在我的博客中给我留言，这样我会随时收到你的评论，并作出回复。  在上一篇神经网络的Python实现（二）全连接网络中，已经介绍了神经网络的部分激活函数，损失函数和全连接网络的前馈和反向传播公式及Numpy实现。这篇博文将要详细介绍卷积神经网络的概念，并且进行前馈和反向传播的公式推导及Numpy实现。 卷积神经网络卷积神经网络（Convolutional Neural Network）非常擅于处">
-<meta name="keywords" content="神经网络,卷积神经网络,反向传播,梯度下降">
+<meta name="keywords" content="神经网络,梯度下降,卷积神经网络,反向传播">
 <meta property="og:type" content="article">
 <meta property="og:title" content="神经网络的Python实现（三）卷积神经网络">
 <meta property="og:url" content="leeeon233.github.io/2018/11/04/神经网络的Python实现（三）卷积神经网络/index.html">
@@ -132,7 +132,7 @@
 <meta property="og:image" content="/images/same.gif">
 <meta property="og:image" content="/images/channels.gif">
 <meta property="og:image" content="/images/channels2.jpg">
-<meta property="og:updated_time" content="2018-11-29T15:32:39.226Z">
+<meta property="og:updated_time" content="2018-11-29T15:43:57.113Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络的Python实现（三）卷积神经网络">
 <meta name="twitter:description" content="推荐在我的博客中给我留言，这样我会随时收到你的评论，并作出回复。  在上一篇神经网络的Python实现（二）全连接网络中，已经介绍了神经网络的部分激活函数，损失函数和全连接网络的前馈和反向传播公式及Numpy实现。这篇博文将要详细介绍卷积神经网络的概念，并且进行前馈和反向传播的公式推导及Numpy实现。 卷积神经网络卷积神经网络（Convolutional Neural Network）非常擅于处">
@@ -375,7 +375,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-29 23:32:39" itemprop="dateModified" datetime="2018-11-29T23:32:39+08:00">2018-11-29</time>
+                <time title="修改时间：2018-11-29 23:43:57" itemprop="dateModified" datetime="2018-11-29T23:43:57+08:00">2018-11-29</time>
               
             
           </span>
@@ -699,8 +699,8 @@ w_{12} & w_{11}
 \right]</script><blockquote>
 <p><strong>注</strong>：无论前向步长为多少，旋转后的卷积步长一直是1。</p>
 </blockquote>
-<p>以上是对于单通道的卷积情况。对于多通道时计算方式会有一些不同。举个例子：<br>假设此时 $l-1$ 层输入为 $14<em>14</em>6$ 大小的数据，使用16个 $5<em>5$ 的卷积核进行前向传播，得到了 $10</em>10*16$ 大小的输出。对于输入和输出通道数不同的情况下我们该如何计算误差呢？</p>
-<p>$l$ 层的误差 $\delta_{l}$ 的大小为 $l-1$ 层的输出大小即 $10<em>10</em>16$。通过前向传播过程可以知道输出的每一个通道即是此层的每一个卷积核的输出，所以反向传播时，每一个通道的误差便是每个卷积核对应的误差，大小为 $10<em>10</em>1$。又因为前向传播时的卷积操作是将那些乘积的结果累和，所以反向传播时要将其还原，所以将 $10<em>10</em>1$ 的误差除以卷积核的通道数再复制扩展变成 $10<em>10</em>6$ 大小的误差（每个通道上值均相同）。然后再根据单通道情况的卷积反向传播算法进行计算（此处卷积时通道之间不累和），得到 $14<em>14</em>6$ 的结果。一共有16个卷积核， $l-1$ 层的误差 $\delta_l$ 便是将这16个卷积核得到的 $14<em>14</em>6$ 的结果累和再取平均值。</p>
+<p>以上是对于单通道的卷积情况。对于多通道时计算方式会有一些不同。举个例子：<br>假设此时 $l-1$ 层输入为 $14\times14\times6$ 大小的数据，使用$16$个 $5\times5$ 的卷积核进行前向传播，得到了 $10\times10\times16$ 大小的输出。对于输入和输出通道数不同的情况下我们该如何计算误差呢？</p>
+<p>$l$ 层的误差 $\delta_{l}$ 的大小为 $l-1$ 层的输出大小即 $10\times10\times16$。通过前向传播过程可以知道输出的每一个通道即是此层的每一个卷积核的输出，所以反向传播时，每一个通道的误差便是每个卷积核对应的误差，大小为 $10\times10\times1$。又因为前向传播时的卷积操作是将那些乘积的结果累和，所以反向传播时要将其还原，所以将 $10\times10\times1$ 的误差除以卷积核的通道数再复制扩展变成 $10\times10\times6$ 大小的误差（每个通道上值均相同）。然后再根据单通道情况的卷积反向传播算法进行计算（此处卷积时通道之间不累和），得到 $14\times14\times6$ 的结果。一共有$16$个卷积核， $l-1$ 层的误差 $\delta_l$ 便是将这$16$个卷积核得到的 $14\times14\times6$ 的结果累和再取平均值。</p>
 <h3 id="更新-W-和-b"><a href="#更新-W-和-b" class="headerlink" title="更新$W$和$b$"></a>更新$W$和$b$</h3><p>我们求出了 $\delta_l$ 的值，现在要更新这层卷积核的参数。根据公式：</p>
 <script type="math/tex; mode=display">z^l = a^{l-1}*W^l +b</script><p>可以求得：</p>
 <script type="math/tex; mode=display">\frac{\partial J(W,b)}{\partial W^{l}} = \frac{\partial J(W,b)}{\partial z^{l}}\frac{\partial z^{l}}{\partial W^{l}} =a^{l-1} *\delta^l</script><p>上面的公式适用于步长是1的时候，当步长大于1时，我们来看看有什么变化：</p>
@@ -853,11 +853,11 @@ a_{41} & a_{42} & a_{43} & a_{44}
           
             <a href="/tags/神经网络/" rel="tag"># 神经网络</a>
           
+            <a href="/tags/梯度下降/" rel="tag"># 梯度下降</a>
+          
             <a href="/tags/卷积神经网络/" rel="tag"># 卷积神经网络</a>
           
             <a href="/tags/反向传播/" rel="tag"># 反向传播</a>
-          
-            <a href="/tags/梯度下降/" rel="tag"># 梯度下降</a>
           
         </div>
       
