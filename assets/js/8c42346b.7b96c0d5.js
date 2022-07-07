@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkleonzhao_blog=self.webpackChunkleonzhao_blog||[]).push([[123],{1144:e=>{e.exports=JSON.parse('[{"label":"hello","permalink":"/game/tags/hello","count":1}]')}}]);

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://leonzhao.cn/blog</id>
+    <id>https://leonzhao.cn/dl</id>
     <title>Leon Zhao Blog</title>
     <updated>2022-07-07T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://leonzhao.cn/blog"/>
+    <link rel="alternate" href="https://leonzhao.cn/dl"/>
     <subtitle>Leon Zhao Blog</subtitle>
     <icon>https://leonzhao.cn/img/favicon.ico</icon>
     <entry>
         <title type="html"><![CDATA[Welcome]]></title>
         <id>welcome</id>
-        <link href="https://leonzhao.cn/blog/welcome"/>
+        <link href="https://leonzhao.cn/dl/welcome"/>
         <updated>2022-07-07T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[hello docusaurus]]></summary>
         <content type="html"><![CDATA[<p>hello docusaurus</p>]]></content>
