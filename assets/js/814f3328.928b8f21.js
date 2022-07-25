@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkleonzhao_blog=self.webpackChunkleonzhao_blog||[]).push([[535],{5641:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"\u5982\u4f55\u4f7f\u7528CRDT\u5b9e\u73b0\u4e00\u4e2a\u7b80\u5355\u7684\u591a\u4eba\u6587\u672c\u534f\u540c\u5e94\u7528","permalink":"/blog/2022/07/07/crdt-toy"}]}')}}]);

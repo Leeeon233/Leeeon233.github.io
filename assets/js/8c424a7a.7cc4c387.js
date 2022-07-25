@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkleonzhao_blog=self.webpackChunkleonzhao_blog||[]).push([[793],{344:e=>{e.exports=JSON.parse('[{"label":"hello","permalink":"/rust/tags/hello","count":1}]')}}]);
