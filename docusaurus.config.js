@@ -74,8 +74,8 @@ const config = {
           // },
           {to: '/blog', label: 'Blog', position: 'left'},
           {to: '/blog/tags/rust', label: 'Rust', position: 'left'},
-          {to: '/blog/tags/game', label: 'Game', position: 'left'},
-          {to: '/blog/tags/deep-learning', label: 'Deep Learning', position: 'left'},
+          // {to: '/blog/tags/game', label: 'Game', position: 'left'},
+          // {to: '/blog/tags/deep-learning', label: 'Deep Learning', position: 'left'},
           {
             href: 'https://github.com/Leeeon233',
             label: 'GitHub',
