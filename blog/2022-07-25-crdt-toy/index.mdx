@@ -9,7 +9,7 @@ tags: [crdt, rust, webassembly, editor]
 - 项目地址: https://github.com/Leeeon233/crdt-toy
 - demo地址: https://leonzhao.cn/crdt-toy
 
-# 什么是CRDTs
+## 什么是CRDTs
 
 对于CRDTs可以优先通过看[[CRDT简介](https://www.zxch3n.com/crdt-intro/crdt-intro/)]、[[CRDT原理](http://jtfmumm.com/blog/2015/11/17/crdt-primer-1-defanging-order-theory/)]这些文章了解。
 
@@ -68,7 +68,7 @@ CRDTs是近些年开始备受关注的一种用来处理分布式系统上的协
 对于Alice和Bob的例子，在输入`Hello CRDT`和`Hello crdt`时可能进行了多次的同步操作，最终展现在Alice和Bob眼前的文本根据不同的crdt算法和冲突解决策略可能变得不同。也许是`Hello crdt`、`Hello CRDTHellocrdt`或`Hello CRDTcrdt`等等都有可能，但是最终在Alice和Bob眼前的结果将会是完全一致的其中一种结果。
 
 
-# CRDTs的简单实现
+## CRDTs的简单实现
 
 我们就以多人的文本内容协作作为场景来尝试实现一个基于op的crdt的编辑器。下面是编辑器demo的效果展示。分别有`Client1`和`Client2`两个客户端在共同编辑一份文档。
 **Final Text**的文本区域展示的当前同步后的结果。`Client1`和`Client2`也可以点击按钮表示进行同步。
@@ -81,7 +81,7 @@ CRDTs是近些年开始备受关注的一种用来处理分布式系统上的协
 - 删除
 - ~~修改~~（可以简单地视为先删除再插入的组合）
 
-## 分布式中的顺序
+### 分布式中的顺序
 
 那么我们还是回到Alice和Bob的例子，我们提供了第一版的编辑器给他们，但是由于我们技术还未成熟，要求他们只能插入内容还不能删除。Alice和Bob同意参与到我们的迭代测试中去。他们还是分别一次输入了
 `Hello CRDT`和`Hello crdt`。这时他们发起了同步。
@@ -191,7 +191,7 @@ Alice给Bob打了个电话，发现自己的屏幕上结果是`Hello CRDTHello c
 
 我们抓紧更新了v3.0版本的编辑器给到Alice和Bob，心想肯定没问题了。
 
-## 只确定逻辑顺序就够了吗
+### 只确定逻辑顺序就够了吗
 
 
 
