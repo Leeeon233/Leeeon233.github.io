@@ -27,7 +27,15 @@ const config = {
     defaultLocale: 'zh-Hans',
     locales: ['zh-Hans'],
   },
-
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        indexDocs: false,
+        hashed: true
+      },
+    ],
+  ],
   presets: [
     [
       'classic',
@@ -132,6 +140,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+
     }),
 };
 
