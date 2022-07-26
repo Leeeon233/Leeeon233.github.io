@@ -1,0 +1,200 @@
+---
+title: 如何使用CRDT实现一个简单的多人文本协同应用
+authors: [leonzhao]
+tags: [crdt, rust, webassembly, editor]
+---
+
+这篇博客将简要介绍[CRDTs](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)（Conflict-free Replicated Data Types）的基本概念以及从开发者的角度着重介绍简单的CRDTs的实现流程与细节（基于*RGA算法*），并且基于这些知识点实现一个rust+wasm的简单web文本协作demo。
+
+- 项目地址: https://github.com/Leeeon233/crdt-toy
+- demo地址: https://leonzhao.cn/crdt-toy
+
+# 什么是CRDTs
+
+对于CRDTs可以优先通过看[[CRDT简介](https://www.zxch3n.com/crdt-intro/crdt-intro/)]、[[CRDT原理](http://jtfmumm.com/blog/2015/11/17/crdt-primer-1-defanging-order-theory/)]这些文章了解。
+
+CRDTs是近些年开始备受关注的一种用来处理分布式系统上的协同可用性的数据结构。它在`可用性`与`分区容错性`的基础上，不提供`完美的一致性`而是提供**`强最终一致性`**。下面的例子可以帮助我们理解什么是**强最终一致性**。
+
+比如当前有**Alice**和**Bob**两个同学在各自的电脑上共同编辑同一份文档，Alice写入了`Hello CRDT`，Bob写入了`Hello crdt`。
+
+
+```mermaid
+    flowchart TB
+    subgraph Bob
+    id2[Hello crdt];
+    end;
+    subgraph Alice
+    id1[Hello CRDT];
+    end;
+```
+
+但在此时Alice其实并没有办法知晓Bob可能在同一时刻也写入了`Hello crdt`的文本，并不像真正本地那样，完全意义上的在**编辑同一份文件**（一致性）。
+
+只有当他们进行了一次同步通信后，Alice或者Bob才会知晓对方编辑了什么。crdt所提供的**强最终一致性**意义并不是让多人协同真正地像大家就在同一页纸上写字一样，而是大家可以各自地编辑自己的内容，尽管在多次同步的过程中会产生冲突，但crdt可以保证所有的消息都被接收后，**最终的内容**将会是多方一致的，哪怕可能最终冲突解决后的版本并不是真正所期待的结果。
+
+```mermaid
+  flowchart TB
+    subgraph Edit
+    id1-->id3
+    id2-->id4
+    direction TB %% 子图1方向
+        subgraph Alice
+            direction TB
+            id1[Hello CRDT];
+            id1---id4((多次同步));
+        end
+        subgraph Bob
+            direction TB
+            id2[Hello crdt];
+            id2---id3((多次同步));
+        end
+
+    end
+
+    subgraph Result
+    direction TB %% 子图2方向
+    idn[结果]
+    idn--?---id5[Hello crdt];
+    idn--?---id6[Hello CRDTHellocrdt];
+    idn--?---id7[Hello CRDTcrdt];
+    end
+
+  %% 主图
+  id3-->idn
+  id4-->idn
+  %% Edit-->Result
+```
+
+对于Alice和Bob的例子，在输入`Hello CRDT`和`Hello crdt`时可能进行了多次的同步操作，最终展现在Alice和Bob眼前的文本根据不同的crdt算法和冲突解决策略可能变得不同。也许是`Hello crdt`、`Hello CRDTHellocrdt`或`Hello CRDTcrdt`等等都有可能，但是最终在Alice和Bob眼前的结果将会是完全一致的其中一种结果。
+
+
+# CRDTs的简单实现
+
+我们就以多人的文本内容协作作为场景来尝试实现一个基于op的crdt的编辑器。下面是编辑器demo的效果展示。分别有`Client1`和`Client2`两个客户端在共同编辑一份文档。
+**Final Text**的文本区域展示的当前同步后的结果。`Client1`和`Client2`也可以点击按钮表示进行同步。
+
+[//]: # (<iframe src={"https://leonzhao.cn/crdt-toy"} width={860} height={840}/>)
+
+首先我们需要确定这样一个简单的编辑器，用户会有哪些操作(op)。思考一下，非常简单地就可以得出一共有两种操作：
+
+- 插入
+- 删除
+- ~~修改~~（可以简单地视为先删除再插入的组合）
+
+## 分布式中的顺序
+
+那么我们还是回到Alice和Bob的例子，我们提供了第一版的编辑器给他们，但是由于我们技术还未成熟，要求他们只能插入内容还不能删除。Alice和Bob同意参与到我们的迭代测试中去。他们还是分别一次输入了
+`Hello CRDT`和`Hello crdt`。这时他们发起了同步。
+
+```mermaid
+  flowchart TB
+    subgraph Editor
+    id1-->id3
+    id2-->id4
+    direction TB %% 子图1方向
+        subgraph Alice
+            direction TB
+            id1[Hello CRDT];
+            id1---id4((同步));
+            id4-->AliceText[Hello CRDTHello crdt]
+        end
+        subgraph Bob
+            direction TB
+            id2[Hello crdt];
+            id2---id3((同步));
+            id3-->BobText[Hello crdtHello CRDT]
+        end
+
+    end
+```
+
+Alice给Bob打了个电话，发现自己的屏幕上结果是`Hello CRDTHello crdt`而Bob的屏幕上结果是`Hello crdtHello CRDT`。怎么会这样？他们把测试结果反馈给了我们。
+
+原来我们第一版系统都把新接收到的**插入操作**当作了后发生的事情，Alice的编辑器把Bob的内容加在了后面，Bob的编辑器也是如此。这和我们一开始所强调的**强最终一致性**可不符。我们希望无论事件被怎样创建和接收，只要操作集合是一致的，那么最终结果应该一样。
+
+既然已经知道了问题所在，那么就没什么问题了。我们只需要让每个用户之间有一个固定的顺序就可以了，可以为每一个编辑器客户端分配一个`Client ID`，以**ID**的大小顺序来作为操作的顺序。我们很快发布了v2.0版本，让客户端ID越大认为操作越先发生，并且分配
+- Alice的客户端版本为`1`
+- Bob的客户端版本为`2`
+
+提供给了Alice和Bob帮忙测试使用。
+
+```mermaid
+  flowchart TB
+    subgraph Editor
+    id1-->id3
+    id2-->id4
+    direction TB %% 子图1方向
+        subgraph Alice
+            direction TB
+            id1[Hello CRDT];
+            id1---id4((同步));
+            id4-->AliceText[Hello crdtHello CRDT]
+        end
+        subgraph Bob
+            direction TB
+            id2[Hello crdt];
+            id2---id3((同步));
+            id3-->BobText[Hello crdtHello CRDT]
+        end
+
+    end
+```
+
+这回没有问题了，Alice和Bob的编辑器上显示的都是`Hello crdtHello CRDT`文本。
+
+但随着进一步使用，Alice和Bob又发现问题了。这次
+- Bob 先输入了`one `然后又输入了`two`
+- Alice先输入了`three `又输入了`four`
+
+然后他们进行了同步，这次每个人都**发送了两个插入操作**。
+
+```mermaid
+  flowchart TB
+    subgraph Editor
+    one-->sy2
+    two-->sy2
+    three-->sy1
+    four-->sy1
+    direction TB %% 子图1方向
+        subgraph Bob
+            direction TB
+            one[one ];
+            one-->two;
+            two---sy1((同步))
+            sy1-->BobText[one two fourthree ]
+        end
+
+        subgraph Alice
+            direction TB
+            three[three ];
+            three-->four;
+            four---sy2((同步));
+            sy2-->AliceText[one two three four]
+        end
+
+    end
+```
+
+现在Bob的屏幕上显示的是`one two fourthree `而Alice屏幕上显示的却是`one two three four`，正常来说`one two three four`才是他们想要的结果。
+
+我们发现Alice向Bob同步的内容发生了顺序的改变，有着分布式经验的我们立刻想到，可能是网络延迟的原因，导致Alice的第二个操作早于第一个操作被Bob的客户端接收到造成了顺序的不一致。
+
+既然已经知道了问题所在，那么就没什么问题了。我们可以新增一个逻辑时间戳，也就是[Lamport Timestamp](https://en.wikipedia.org/wiki/Lamport_timestamp)
+
+> Lamport Timestamp 的算法很简单[^1]
+> - 每个进程维护一个`counter`
+> - 本地每发生一个事件就将`counter + 1`，并将事件的时间戳设置为`counter`值
+> - 每当进程发送一个消息，就将本地`counter + 1`，并将最新的`counter`值附带在消息上
+> - 当进程收到消息后，让自己的`counter = max(counter, message.counter) + 1`
+
+我们在原有的`ClientId`基础上进行了扩展，构建了一个`EventId`，其中包括了`ClientId`和`Lamport Timestamp`两部分，这样事件的发生顺序就可以与接收到的顺序无关了。
+
+我们抓紧更新了v3.0版本的编辑器给到Alice和Bob，心想肯定没问题了。
+
+## 只确定逻辑顺序就够了吗
+
+
+
+
+
+[^1]: [如何设计 CRDT 算法-Zxch3n](https://www.zxch3n.com/crdt-intro/design-crdt)
