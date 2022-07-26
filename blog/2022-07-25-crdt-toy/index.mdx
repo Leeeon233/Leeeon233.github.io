@@ -73,7 +73,7 @@ CRDTs是近些年开始备受关注的一种用来处理分布式系统上的协
 我们就以多人的文本内容协作作为场景来尝试实现一个基于op的crdt的编辑器。下面是编辑器demo的效果展示。分别有`Client1`和`Client2`两个客户端在共同编辑一份文档。
 **Final Text**的文本区域展示的当前同步后的结果。`Client1`和`Client2`也可以点击按钮表示进行同步。
 
-[//]: # (<iframe src={"https://leonzhao.cn/crdt-toy"} width={860} height={840}/>)
+<iframe src={"https://leonzhao.cn/crdt-toy"} width={860} height={840}/>
 
 首先我们需要确定这样一个简单的编辑器，用户会有哪些操作(op)。思考一下，非常简单地就可以得出一共有两种操作：
 
