@@ -56,6 +56,7 @@ const config = {
           editUrl:
             'https://github.com/Leeeon233/Leeeon233.github.io/tree/main/blog',
           remarkPlugins: [require('mdx-mermaid')],
+          blogSidebarCount: 0,
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
