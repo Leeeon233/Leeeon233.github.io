@@ -9,11 +9,13 @@ tags: [crdt, rust, webassembly, editor]
 - 项目地址: https://github.com/Leeeon233/crdt-toy
 - demo 地址: https://leonzhao.cn/crdt-toy
 
+实现思路参考了 crdt-edit[^1]
+
 <!--truncate-->
 
 ## 什么是 CRDTs
 
-对于 CRDTs 可以优先通过看[[CRDT 简介](https://www.zxch3n.com/crdt-intro/crdt-intro/)]、[[CRDT 原理](http://jtfmumm.com/blog/2015/11/17/crdt-primer-1-defanging-order-theory/)]这些文章了解。
+对于 CRDTs 可以优先通过看[[CRDT 简介[^2]](https://www.zxch3n.com/crdt-intro/crdt-intro/)]、[[CRDT 原理[^3]](http://jtfmumm.com/blog/2015/11/17/crdt-primer-1-defanging-order-theory/)]这些文章了解。
 
 CRDTs 是近些年开始备受关注的一种用来处理分布式系统上的协同可用性的数据结构。它在`可用性`与`分区容错性`的基础上，不提供`完美的一致性`而是提供**`强最终一致性`**。下面的例子可以帮助我们理解什么是**强最终一致性**。
 
@@ -35,7 +37,7 @@ CRDTs 是近些年开始备受关注的一种用来处理分布式系统上的�
 
 ```mermaid
   flowchart TB
-    subgraph Edit
+    subgraph Editor
     id1-->id3
     id2-->id4
     direction TB %% 子图1方向
@@ -63,7 +65,6 @@ CRDTs 是近些年开始备受关注的一种用来处理分布式系统上的�
   %% 主图
   id3-->idn
   id4-->idn
-  %% Edit-->Result
 ```
 
 对于 Alice 和 Bob 的例子，在输入`Hello CRDT`和`Hello crdt`时可能进行了多次的同步操作，最终展现在 Alice 和 Bob 眼前的文本根据不同的 crdt 算法和冲突解决策略可能变得不同。也许是`Hello crdt`、`Hello CRDTHellocrdt`或`Hello CRDTcrdt`等等都有可能，但是最终在 Alice 和 Bob 眼前的结果将会是完全一致的其中一种结果。
@@ -183,7 +184,7 @@ Alice 给 Bob 打了个电话，发现自己的屏幕上结果是`Hello CRDTHell
 
 既然已经知道了问题所在，那么就没什么问题了。我们可以新增一个逻辑时间戳，也就是[Lamport Timestamp](https://en.wikipedia.org/wiki/Lamport_timestamp)
 
-> Lamport Timestamp 的算法很简单[^1]
+> Lamport Timestamp 的算法很简单[^4]
 >
 > - 每个进程维护一个`counter`
 > - 本地每发生一个事件就将`counter + 1`，并将事件的时间戳设置为`counter`值
@@ -283,12 +284,232 @@ blank[空白]-->a-->ab-->abc-->ac-->adc
 - 在 a 后面输入 b
 - 在 b 后面输入 c
 - 删除字符 b
-- 在 a 的后面插入 d
+- 在 a 后面插入 d
 
 那么位置就完全可以通过当前文本内容，看接下来要插入或者删除的字符是*基于*目前文本的哪个字符做的操作就可以确定了。这样不同的字符之间好像就有了依赖关系，那数据结构是不是可以使用树形结构了？
 
 我们突然感觉灵感来了。
 
-###
+### 文本编辑好像就是棵树
 
-[^1]: [如何设计 CRDT 算法-Zxch3n](https://www.zxch3n.com/crdt-intro/design-crdt)
+如果我们把初始空文本当作树的根节点（root）的话，那么插入字符`a`就是`a`是`root`的子节点。在`a`后面插入`b`，那`b`就是`a`的子节点。我们把上面的示例画一下：
+
+```mermaid
+flowchart LR
+1-->2
+2-->3
+3--删除?-->4
+4--顺序?-->5
+    subgraph 1
+    direction TB
+    root-->a-->b
+    end
+
+    subgraph 2
+    direction TB
+    root2[root]-->a2[a]-->b2[b]-->c2[c]
+    end
+
+    subgraph 3
+    direction TB
+    root3[root]-->a3[a]-->b3["b(删除)"]-->c3[c]
+    end
+
+    subgraph 4
+    direction TB
+    root4[root]-->a4[a]-->c4[c]
+    end
+
+    subgraph 5
+    direction TB
+    root5[root]-->a5[a]-->c5[c]
+    a5-->d5[d]
+    end
+
+```
+
+把输入字符的过程可视化之后，我们看到过程 1 和 2 好像都没什么问题，全部都是在按顺序插入字符，前一个字符作为后一个字符的父节点，从根节点遍历下来就能还原原始文档。但是接下来我们好像遇到两个不是太明朗的操作。
+
+- 多个子节点时遍历顺序是否有要求
+- 删除字符时是否要把节点删除
+
+这回实在不好意思再请 Alice 和 Bob 帮我们找问题了，就我和你来自己先多测测吧。第一个问题看起来还算简单
+
+```mermaid
+flowchart LR
+t1-.-g1
+t2-.-g2
+t3-.-g3
+t4-.-g4
+
+
+subgraph tree[Tree]
+direction LR
+    g1-->g2
+    g2-->g3
+    g3-->g4
+
+    subgraph g1["insert a at 0"]
+    direction TB
+    a1[a]
+    end
+
+    subgraph g2[insert b after a]
+    direction TB
+    a2[a]-->b2[b]
+    end
+
+    subgraph g3[insert c after a]
+    direction TB
+    a3-->c3[c]
+    a3[a]-->b3[b]
+    end
+
+    subgraph g4[insert d after a]
+    direction TB
+    a4-->d4[d]
+    a4-->c4[c]
+    a4[a]-->b4[b]
+    end
+end
+
+subgraph text[Text]
+direction LR
+
+t1[a]-->t2[ab]-->t3[acb]-->t4[adcb]
+end
+
+
+```
+
+我们不断模拟向`a`后面加入文本，结果都是越后面加入的字符，越显示在前面。在前面测试分布式同步的时候我们已经可以通过`EventId`全局地确定顺序了，那么全部子节点的顺序就可以通过`EventId`进行排序，越*新*的`EventId`将在子节点中越早被遍历。
+
+### 删除了字符，它就不存在了吗？
+
+接着我们模拟了几次协作时删除字符的情况，比如这次我先输入了`ab`你输入了`c`，之后我们进行了一次同步，我们的结果最后都是`abc`。
+
+<details>
+<summary>你可能会有疑问，为什么是<code>abc</code>，而不是<code>cab</code>？</summary>
+
+这里我们使用假设
+
+- 你的`ClientId`是`1`
+- 我的`ClientId`是`2`
+- `ClientId`越大 crdt 认为越先发生
+
+我们详细看一下`abc`的合并过程，现在我收到了全部的 crdts 的 op：
+
+1. 根节点插入 `a` EventId(counter: 0, client_id: 2)
+2. `a` 节点插入 `b` EventId(counter: 1, client_id: 2)
+3. 根节点插入 `c` EventId(counter: 0, client_id: 1)
+
+根据刚刚的结论，op1 和 op3 都是`counter`为 0 的 op，但是 op1 的`ClientId`更大，在假设前提下会被认为优先发生。那么整个 op 顺序就会变成 132，即结果的`abc`。
+
+</details>
+
+紧接着我删除了`b`，而你在`b`的后面输入了`d`，然后我们都发起了同步请求。
+
+```mermaid
+flowchart TB
+    subgraph Editor
+    direction TB %% 子图1方向
+    b--->sy1
+    c-->sy2
+    d-->sy4
+    db2-->sy3
+    sy3-->rf["??????"]
+    sy4-->rf
+        subgraph 我
+            direction TB
+            a["insert a at 0\n\n a"]-->b["insert b after a\n\n ab"]-->sy2((同步))-->r2["同步后\n\n abc"]-->db2["delete b\n\n ac"]-->sy4((同步))
+        end
+
+        subgraph 你
+            direction TB
+            c["insert c at 0\n\n c"]-->sy1((同步))-->r1["同步后\n\n abc"]-->d["insert d after b\n\n abdc"]-->sy3((同步));
+        end
+
+    end
+
+```
+
+现在好像遇到了问题，我都已经把`b`删掉了，那么该怎么同步你要把`d`插入在`b`后面的操作呢？
+
+我静静地整理了一下思路，我删除了`b`，但于此同时的你或者其他人仍可能在`b`后面输入一些字符，这也就是`b`仍可能是其他子树的父节点。其他节点仍然可能会依赖于它。所以我们在删除操作时不可能将真正的树节点删除。
+
+再来想想文本展示时，就是一个树的遍历过程。只要不在编辑器上显示这个字符那么使用编辑器的用户就完全可以认为这个字符被删除了。所以我们只需要给每个节点增加一个`标志`，表示这个节点是不是被删除就可以了。
+
+:::tip
+
+上面提到的为了保留树的完整结构，不删除节点，而是添加标志的方式就是一种[墓碑机制](https://baike.baidu.com/item/%E5%A2%93%E7%A2%91%E6%9C%BA%E5%88%B6/7558924)
+
+:::
+
+现在我们编辑器的结果就都会是`adc`，满足 crdts 所要求的`强最终一致性`。我们来遍历一遍刚刚所形成的文本树：
+
+```mermaid
+
+flowchart LR
+t1-.-g1
+t2-.-g2
+t3-.-g3
+t4-.-g4
+t5-.-g5
+
+
+subgraph tree[Tree]
+direction LR
+    g1-->g2
+    g2-->g3
+    g3-->g4
+    g4-->g5
+
+    subgraph g1["insert a at 0"]
+    direction TB
+    root1[root]-->a1[a]
+    end
+
+    subgraph g2[insert b after a]
+    direction TB
+    root2[root]-->a2[a]-->b2[b]
+    end
+
+    subgraph g3[insert c at 0]
+    direction TB
+    root3[root]-->a3[a]-->b3[b]
+    root3-->c3[c]
+    end
+
+    subgraph g4[delete b]
+    direction TB
+    root4[root]-->a4[a]-->b4["b (deteled)"]
+    root4-->c4[c]
+    end
+
+    subgraph g5[insert d after b]
+    direction TB
+    root5[root]-->a5[a]-->b5["b (deteled)"]-->d5[d]
+    root5-->c5[c]
+    end
+end
+
+subgraph text[Text]
+direction LR
+
+t1[a]-->t2[ab]-->t3[abc]-->t4[ac]-->t5[adc]
+end
+
+```
+
+## CRDTs 能够达成多人的操作协同，那么代价呢？
+
+我们把最终的 v0.4 版本编辑器给到了 Alice 和 Bob，Alice 和 Bob 会有什么反馈呢？
+
+我们来等待下一篇，看看 Alice 和 Bob 会不会有什么抱怨。
+
+## 参考资料
+
+[^1]: https://github.com/wangdashuaihenshuai/crdt-edit
+[^2]: [CRDT 简介](https://www.zxch3n.com/crdt-intro/crdt-intro/)
+[^3]: [A CRDT Primer Part I: Defanging Order Theory](http://jtfmumm.com/blog/2015/11/17/crdt-primer-1-defanging-order-theory/)
+[^4]: [如何设计 CRDT 算法-Zxch3n](https://www.zxch3n.com/crdt-intro/design-crdt)
