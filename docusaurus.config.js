@@ -1,44 +1,44 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require("prism-react-renderer/themes/github");
+const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Leon Zhao',
-  tagline: 'Do something harder but more correct and valuable',
-  url: 'https://leonzhao.cn',
-  baseUrl: '/',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
-  deploymentBranch: 'gh-pages',
+  title: "Leon Zhao",
+  tagline: "Do something harder but more correct and valuable",
+  url: "https://leonzhao.cn",
+  baseUrl: "/",
+  onBrokenLinks: "throw",
+  onBrokenMarkdownLinks: "warn",
+  favicon: "img/favicon.ico",
+  deploymentBranch: "gh-pages",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Leeeon233', // Usually your GitHub org/user name.
-  projectName: 'Leeeon233.github.io', // Usually your repo name.
+  organizationName: "Leeeon233", // Usually your GitHub org/user name.
+  projectName: "Leeeon233.github.io", // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'zh-Hans',
-    locales: ['zh-Hans'],
+    defaultLocale: "zh-Hans",
+    locales: ["zh-Hans"],
   },
   themes: [
     [
       require.resolve("@easyops-cn/docusaurus-search-local"),
       {
         indexDocs: false,
-        hashed: true
+        hashed: true,
       },
     ],
   ],
   presets: [
     [
-      'classic',
+      "classic",
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: false,
@@ -54,12 +54,18 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/Leeeon233/Leeeon233.github.io/tree/main/blog',
-          remarkPlugins: [require('mdx-mermaid')],
+            "https://github.com/Leeeon233/Leeeon233.github.io/tree/main/blog",
+          remarkPlugins: [require("mdx-mermaid")],
           blogSidebarCount: 0,
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: require.resolve("./src/css/custom.css"),
+        },
+        sitemap: {
+          changefreq: "weekly",
+          priority: 0.5,
+          ignorePatterns: ["/tags/**"],
+          filename: "sitemap.xml",
         },
       }),
     ],
@@ -69,10 +75,10 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Leon Zhao',
+        title: "Leon Zhao",
         logo: {
-          alt: 'Logo',
-          src: 'img/logo.svg',
+          alt: "Logo",
+          src: "img/logo.svg",
         },
         items: [
           // {
@@ -81,19 +87,19 @@ const config = {
           //   position: 'left',
           //   label: 'Tutorial',
           // },
-          {to: '/blog', label: 'Blog', position: 'left'},
-          {to: '/blog/tags/rust', label: 'Rust', position: 'left'},
+          { to: "/blog", label: "Blog", position: "left" },
+          { to: "/blog/tags/rust", label: "Rust", position: "left" },
           // {to: '/blog/tags/game', label: 'Game', position: 'left'},
           // {to: '/blog/tags/deep-learning', label: 'Deep Learning', position: 'left'},
           {
-            href: 'https://github.com/Leeeon233',
-            label: 'GitHub',
-            position: 'right',
+            href: "https://github.com/Leeeon233",
+            label: "GitHub",
+            position: "right",
           },
         ],
       },
       footer: {
-        style: 'dark',
+        style: "dark",
         links: [
           // {
           //   title: 'Docs',
@@ -122,15 +128,15 @@ const config = {
           //   ],
           // },
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: "Blog",
+                to: "/blog",
               },
               {
-                label: 'GitHub',
-                href: 'https://github.com/Leeeon233',
+                label: "GitHub",
+                href: "https://github.com/Leeeon233",
               },
             ],
           },
@@ -141,7 +147,6 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-
     }),
 };
 
