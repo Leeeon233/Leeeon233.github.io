@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkleonzhao_blog=self.webpackChunkleonzhao_blog||[]).push([[764],{9257:e=>{e.exports=JSON.parse('{"label":"webassembly","permalink":"/blog/tags/webassembly","allTagsPath":"/blog/tags","count":1}')}}]);
