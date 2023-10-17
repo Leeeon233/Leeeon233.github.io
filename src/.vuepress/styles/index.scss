@@ -1,1 +1,9 @@
 // place your custom styles here
+.vp-article-title {
+  font-size: xx-large;
+  font-weight: bold;
+}
+
+.theme-container.no-sidebar.has-toc .vp-page {
+  padding-inline-end: 0;
+}

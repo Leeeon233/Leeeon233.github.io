@@ -1,17 +1,16 @@
 ---
 cover: /assets/images/cover2.jpg
-icon: pen-to-square
-date: 2022-01-12
+title: Movable Tree in CRDT
+sidebar: false
+date: 2023-10-17
 category:
-  - Vegetable
+  - Collaboration Algorithm
 tag:
-  - red
-  - round
+  - CRDT
 star: true
-sticky: true
 ---
 
-# Tomato
+#
 
 ## Heading 2
 
