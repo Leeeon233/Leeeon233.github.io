@@ -1,11 +1,16 @@
 import { LOCALE } from "@config";
+import BlogPostViews from "./BlogPostViews";
 
 interface DatetimesProps {
   pubDatetime: string | Date;
   modDatetime: string | Date | undefined | null;
 }
 
-interface Props extends DatetimesProps {
+interface BlogPostViewsProps {
+  title: string;
+}
+
+interface Props extends DatetimesProps, BlogPostViewsProps {
   size?: "sm" | "lg";
   className?: string;
 }
@@ -13,6 +18,7 @@ interface Props extends DatetimesProps {
 export default function Datetime({
   pubDatetime,
   modDatetime,
+  title,
   size = "sm",
   className,
 }: Props) {
@@ -39,6 +45,14 @@ export default function Datetime({
         <FormattedDatetime
           pubDatetime={pubDatetime}
           modDatetime={modDatetime}
+        />
+      </span>
+      <span>
+        <BlogPostViews
+          className={`italic ${size === "sm" ? "text-sm" : "text-base"} pl-1`}
+          client:only="react"
+          slug={title}
+          increment
         />
       </span>
     </div>

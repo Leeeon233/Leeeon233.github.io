@@ -4,6 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
+import GiscusComment from "@components/GiscusComment";
 import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
@@ -71,6 +72,7 @@ const layoutProps = {
       pubDatetime={pubDatetime}
       modDatetime={modDatetime}
       size="lg"
+      title={title}
       className="my-2"
     />
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
@@ -98,6 +100,7 @@ const layoutProps = {
 
       <ShareLinks />
     </div>
+    <GiscusComment client:only="react" />
   </main>
   <Footer />
 </Layout>
