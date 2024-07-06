@@ -23,7 +23,7 @@ const socialCount = SOCIALS.filter(social => social.active).length;
   <Header />
   <main id="main-content">
     <section id="hero">
-      <h1>Mingalaba</h1>
+      <h1>Leon7hao</h1>
       <a
         target="_blank"
         href="/rss.xml"
@@ -42,20 +42,26 @@ const socialCount = SOCIALS.filter(social => social.active).length;
       </a>
 
       <p>
-        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
-        blog theme. This theme follows best practices and provides accessibility
-        out of the box. Light and dark mode are supported by default. Moreover,
-        additional color schemes can also be configured.
-      </p>
-      <p>
-        Read the blog posts or check
-        <LinkButton
+        我是<b> leon7hao</b>, 之前在达摩院做视觉AI算法，当前在做一个高性能 CRDTs
+        框架 <LinkButton
           className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="https://github.com/satnaing/astro-paper#readme"
-        >
-          README
-        </LinkButton> for more info.
+          href="https://loro.dev"
+          >Loro
+        </LinkButton> 。
       </p>
+      <li>💻 伪全栈工程师，偏<b>算法</b>和<b>前端</b>剩下的靠✨AI。</li>
+      <li>
+        ✍🏻 博客分享 <LinkButton
+          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
+          href="https://www.inkandswitch.com/local-first/"
+          >local-first
+        </LinkButton> 相关进展还有平常学到的东西。
+      </li>
+      <li>🔧 最近对硬件感兴趣，在入门学习 ESP32。</li>
+      <li>👋 主要是记录，能被你看到就更好了。</li>
+
+      <p style={{ paddingTop: 2 }}>你可以在这里找到我：</p>
+
       {
         // only display if at least one social link is enabled
         socialCount > 0 && (
