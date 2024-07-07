@@ -114,6 +114,7 @@ const socialImageURL = new URL(
       /**
        * @params {HTMLCollectionOf<HTMLElement>} graphs
        */
+      // @ts-ignore
       async function renderDiagrams(graphs) {
         const { default: mermaid } = await import("mermaid");
         mermaid.initialize({

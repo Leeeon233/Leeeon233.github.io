@@ -1,0 +1,8 @@
+---
+const { emoji } = Astro.props;
+---
+
+<div class="my-8 flex rounded-lg bg-gray-200 p-4 dark:bg-gray-800">
+  <div class="mr-4 flex w-4 items-center">{emoji}</div>
+  <div class="callout w-full"><slot /></div>
+</div>

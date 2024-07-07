@@ -50,7 +50,6 @@ export default function Datetime({
       <span>
         <BlogPostViews
           className={`italic ${size === "sm" ? "text-sm" : "text-base"} pl-1`}
-          client:only="react"
           slug={slug}
           increment
         />
