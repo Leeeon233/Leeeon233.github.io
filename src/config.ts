@@ -30,6 +30,24 @@ export const SOCIALS: SocialObjects = [
     linkTitle: ` ${SITE.title} on Github`,
     active: true,
   },
+  {
+    name: "Twitter",
+    href: "https://twitter.com/lzon233",
+    linkTitle: `${SITE.title} on Twitter`,
+    active: true,
+  },
+  {
+    name: "Jike",
+    href: "https://jike.city/leonz",
+    linkTitle: `${SITE.title} on Jike`,
+    active: true,
+  },
+  // {
+  //   name: "Mail",
+  //   href: "leeeon233@gmail.com",
+  //   linkTitle: `Send an email to ${SITE.title}`,
+  //   active: true,
+  // },
   // {
   //   name: "Facebook",
   //   href: "https://github.com/satnaing/astro-paper",
@@ -49,18 +67,6 @@ export const SOCIALS: SocialObjects = [
   //   active: true,
   // },
 
-  {
-    name: "Twitter",
-    href: "https://twitter.com/lzon233",
-    linkTitle: `${SITE.title} on Twitter`,
-    active: true,
-  },
-  {
-    name: "Mail",
-    href: "leeeon233@gmail.com",
-    linkTitle: `Send an email to ${SITE.title}`,
-    active: true,
-  },
   // {
   //   name: "Twitch",
   //   href: "https://github.com/satnaing/astro-paper",

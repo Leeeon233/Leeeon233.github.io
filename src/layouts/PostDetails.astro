@@ -177,6 +177,7 @@ const layoutProps = {
     let codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     for (let codeBlock of codeBlocks) {
+      if (codeBlock.className.includes("mermaid")) continue;
       let wrapper = document.createElement("div");
       wrapper.style.position = "relative";
 

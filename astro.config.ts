@@ -5,6 +5,8 @@ import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
 import { SITE } from "./src/config";
+import mdx from "@astrojs/mdx";
+import { mermaid } from "./src/plugins/mermaid";
 
 // https://astro.build/config
 export default defineConfig({
@@ -15,10 +17,12 @@ export default defineConfig({
     }),
     react(),
     sitemap(),
+    mdx(),
   ],
   markdown: {
     remarkPlugins: [
       remarkToc,
+      mermaid,
       [
         remarkCollapse,
         {

@@ -133,3 +133,13 @@
     @apply outline-2 outline-offset-1 outline-skin-fill focus-visible:no-underline focus-visible:outline-dashed;
   }
 }
+
+.mermaid {
+  display: flex;
+}
+
+.mermaid svg {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}

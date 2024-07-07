@@ -7,7 +7,7 @@ interface DatetimesProps {
 }
 
 interface BlogPostViewsProps {
-  title: string;
+  slug: string;
 }
 
 interface Props extends DatetimesProps, BlogPostViewsProps {
@@ -18,8 +18,8 @@ interface Props extends DatetimesProps, BlogPostViewsProps {
 export default function Datetime({
   pubDatetime,
   modDatetime,
-  title,
   size = "sm",
+  slug,
   className,
 }: Props) {
   return (
@@ -51,7 +51,7 @@ export default function Datetime({
         <BlogPostViews
           className={`italic ${size === "sm" ? "text-sm" : "text-base"} pl-1`}
           client:only="react"
-          slug={title}
+          slug={slug}
           increment
         />
       </span>
