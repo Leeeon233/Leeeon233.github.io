@@ -14,25 +14,33 @@ const BlogPostViews = ({
   className?: string;
   increment?: boolean;
 }) => {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+  });
   const [views, setViews] = useState<number | null>(null);
   useEffect(() => {
     try {
-      fetch(`${import.meta.env.PUBLIC_API_URL}/views/${slug}`, {
-        method: increment ? "POST" : "GET",
-      })
-        .then(res => {
-          return res.json();
+      if (inView) {
+        fetch(`${import.meta.env.PUBLIC_API_URL}/views/${slug}`, {
+          method: increment ? "POST" : "GET",
         })
-        .then(data => {
-          setViews(data.count);
-        });
+          .then(res => {
+            return res.json();
+          })
+          .then(data => {
+            setViews(data.count);
+          });
+      }
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  }, [inView]);
 
   return (
-    <span className={className ? className : "capsize ml-2 align-baseline"}>
+    <span
+      className={className ? className : "capsize ml-2 align-baseline"}
+      ref={ref}
+    >
       Views: {views ? formatViews(views) : "–––"}
     </span>
   );
