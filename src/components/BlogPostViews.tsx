@@ -21,17 +21,10 @@ const BlogPostViews = ({
   useEffect(() => {
     try {
       if (inView) {
-        console.log(
-          "fetching views",
-          `${import.meta.env.PUBLIC_API_URL}/views/${slug}`
-        );
-
         fetch(`${import.meta.env.PUBLIC_API_URL}/views/${slug}`, {
           method: increment ? "POST" : "GET",
         })
           .then(res => {
-            console.log("res", res);
-
             return res.json();
           })
           .then(data => {
@@ -39,7 +32,7 @@ const BlogPostViews = ({
           });
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }, [inView]);
 
@@ -48,7 +41,7 @@ const BlogPostViews = ({
       className={className ? className : "capsize ml-2 align-baseline"}
       ref={ref}
     >
-      Views: {views ? formatViews(views) : "–––"}
+      Views: {views !== null ? formatViews(views) : "–––"}
     </span>
   );
 };

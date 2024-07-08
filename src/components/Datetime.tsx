@@ -8,6 +8,7 @@ interface DatetimesProps {
 
 interface BlogPostViewsProps {
   slug: string;
+  increment?: boolean;
 }
 
 interface Props extends DatetimesProps, BlogPostViewsProps {
@@ -21,6 +22,7 @@ export default function Datetime({
   size = "sm",
   slug,
   className,
+  increment,
 }: Props) {
   return (
     <div className={`flex items-center space-x-2 opacity-80 ${className}`}>
@@ -51,7 +53,7 @@ export default function Datetime({
         <BlogPostViews
           className={`italic ${size === "sm" ? "text-sm" : "text-base"} pl-1`}
           slug={slug}
-          increment
+          increment={increment}
         />
       </span>
     </div>
