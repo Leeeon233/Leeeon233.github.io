@@ -21,10 +21,17 @@ const BlogPostViews = ({
   useEffect(() => {
     try {
       if (inView) {
+        console.log(
+          "fetching views",
+          `${import.meta.env.PUBLIC_API_URL}/views/${slug}`
+        );
+
         fetch(`${import.meta.env.PUBLIC_API_URL}/views/${slug}`, {
           method: increment ? "POST" : "GET",
         })
           .then(res => {
+            console.log("res", res);
+
             return res.json();
           })
           .then(data => {
