@@ -1,0 +1,176 @@
+---
+title: "Local-first：不同以往的开发者体验"
+slug: "2024-07-17-local-first-developer-x"
+pubDatetime: 2024-07-18T14:11:22+08:00
+description: Local-first 是一种新的软件开发范式，它所宣扬的理念更多是对于终端用户的好处，但我们发现它对于企业和开发者也有很多好处。本文将介绍 Local-first 的概念，以及它对于开发者的影响。
+author: leon7hao
+tags:
+  - local-first
+  - DX
+---
+
+import { Image } from "astro:assets";
+
+import slide_1 from "@assets/images/local-first-dx/local-first-dx.001.jpeg";
+import slide_2 from "@assets/images/local-first-dx/local-first-dx.004.jpeg";
+import slide_3 from "@assets/images/local-first-dx/local-first-dx.005.jpeg";
+import slide_4 from "@assets/images/local-first-dx/local-first-dx.006.jpeg";
+import slide_5 from "@assets/images/local-first-dx/local-first-dx.008.jpeg";
+import slide_6 from "@assets/images/local-first-dx/local-first-dx.009.jpeg";
+import slide_7 from "@assets/images/local-first-dx/local-first-dx.010.jpeg";
+import slide_8 from "@assets/images/local-first-dx/local-first-dx.011.jpeg";
+import slide_9 from "@assets/images/local-first-dx/local-first-dx.012.jpeg";
+import slide_10 from "@assets/images/local-first-dx/local-first-dx.014.jpeg";
+import slide_11 from "@assets/images/local-first-dx/local-first-dx.016.jpeg";
+import slide_12 from "@assets/images/local-first-dx/local-first-dx.017.jpeg";
+import slide_13 from "@assets/images/local-first-dx/local-first-dx.018.jpeg";
+import slide_14 from "@assets/images/local-first-dx/local-first-dx.020.jpeg";
+import slide_15 from "@assets/images/local-first-dx/local-first-dx.022.jpeg";
+import slide_16 from "@assets/images/local-first-dx/local-first-dx.024.jpeg";
+import slide_17 from "@assets/images/local-first-dx/local-first-dx.026.jpeg";
+import slide_18 from "@assets/images/local-first-dx/local-first-dx.027.jpeg";
+import slide_19 from "@assets/images/local-first-dx/local-first-dx.028.jpeg";
+import slide_20 from "@assets/images/local-first-dx/local-first-dx.029.jpeg";
+import slide_21 from "@assets/images/local-first-dx/local-first-dx.031.jpeg";
+import slide_22 from "@assets/images/local-first-dx/local-first-dx.033.jpeg";
+import slide_23 from "@assets/images/local-first-dx/local-first-dx.035.jpeg";
+import slide_24 from "@assets/images/local-first-dx/local-first-dx.036.jpeg";
+import slide_25 from "@assets/images/local-first-dx/local-first-dx.040.jpeg";
+import slide_26 from "@assets/images/local-first-dx/local-first-dx.042.jpeg";
+import slide_27 from "@assets/images/local-first-dx/local-first-dx.044.jpeg";
+
+这篇博客是我在 7 月 16 日参加的 [AdventureX 2024](https://adventure-x.org/) 黑客松活动上的演讲稿，主题是 **Local-first：不同以往的开发者体验**。
+
+<Image src={slide_1} alt="Local-first：不同以往的开发者体验" />
+
+大家好，我是 [leon7hao](https://twitter.com/lzon233)，[loro](https://loro.dev) 的 co-founder 。很高兴能够在这里为大家介绍 Local-first 本地优先，并且和大家分享本地优先能够给开发者带来哪些不同以往的体验。
+
+<Image src={slide_2} alt="第一次正式提出 Local-first" />
+
+本地优先应该已经不是一个新奇的名词了，Martin 等人 2019 年 在 Ink&Switch 上发表了[这篇文章](https://www.inkandswitch.com/local-first/)[[中文版](https://zhuanlan.zhihu.com/p/557353347)]第一次正式提出了 local-first 的概念。本地优先**并不是确切地指某一项技术**，而是一种软件设计理念，一种新的软件开发范式。希望增强用户对数据的控制，并且结合云的便利性进行协作。我们和之前的软件形态做个对比会更加清晰。
+
+<Image src={slide_3} alt="Local-only 软件" />
+
+在互联网时代之前，大部分软件是 **local-only** 的，点开软件不用注册不用等待网络转圈圈。用户数据都在设备本地，用户拥有数据的所有权和控制权。就算开发软件的公司倒闭了，只要软件环境不变，软件还是可以继续使用。但是想要和其他人分享十分困难，通常需要使用U盘拷贝给别人。
+
+<Image src={slide_4} alt="Cloud-first 软件" />
+
+再之后互联网兴起，电子办公、远程办公、协作办公变成了最基本的工作流，像实时或异步地共同编辑一个文档，使用 Figma 多人进行设计等等。但是为了数据同步还有实时协作我们需要一个中心化的服务器来处理这些，软件变成以云为先，所有数据都需要放在服务器上。这确实很方便，我们更换了设备也都能很快同步好数据，继续工作。但是对于中心化的软件架构，作为用户失去了对自己的数据的掌控。如果服务器宕机或者严重些供应商倒闭，那你就没办法继续使用，比如之前[语雀挂了](https://www.sohu.com/a/731612202_121124373)，Notion挂了等等。
+
+<Image src={slide_5} alt="Local-first 软件" />
+
+本地优先就希望结合这两种软件范式的优点，让用户能够在拥有数据的所有权，可以离线使用的同时支持多人协作和多端同步。
+
+<Image src={slide_6} alt="本地优先的七个原则" />
+
+以上是本地优先那篇文章提出的7个原则，前四个分别对应了 `local-only` 和 `cloud-first` 的优势。除此之外的三项，软件长期可用，保护用户隐私，用户拥有数据的控制权。这些都并不严格是技术要求而是 local-first 想传扬的一种价值观。**你所拥有的应该永远都是你拥有的**。
+
+<Image src={slide_7} alt="本地优先的好处" />
+
+之前介绍的那些本地优先所宣扬的都是对终端客户带来的好处，随着我们开发 loro 不断探索本地优先，发现本地优先对**开发者**和**企业**同样有着不同以往的体验和收益。
+
+<Image src={slide_8} alt="本地优先的对开发者的好处" />
+
+架构简单、开箱即用的多人协作、不用处理网络错误、简单的状态管理等等。在介绍这些好处之前，我们先来看一看是什么使得本地优先相比当下的开发范式有着这些不同。
+
+<Image src={slide_9} alt="当今的客户端服务端架构" />
+
+这是当今常见的软件架构，客户端通过网络请求连接服务端，服务端有服务器负责计算，还有数据库负责持久化。假如现在我们要开发一个支持离线和协作的软件。
+
+<Image src={slide_10} alt="客户端服务端架构如何构建应用" />
+
+我们需要设计好数据模型，定义好用户数据权限，设计UI，选好后端框架，选好数据库，定好网络API。
+前端处理状态管理，缓存，开发UI，然后前后端联调等等。
+
+需要这些是因为我们的数据保存在远端，本地的客户端更像是一个和服务器有 20ms~200ms 不等的**状态渲染器**。服务端需要大量的计算和良好的可扩展性处理来自世界各地发来的请求，所以需要用到更多框架和优化。客户端本身没有完整数据，但是为了支持一定的离线功能，会通过增加缓存来实现。但是这里的缓存并不是**权威**的那一份，所以客户端还需要处理本地缓存失效，本地状态和远端状态不一致时的更新管理，说了这么多还没有涉及到多人协作的同步算法开发。
+
+<Image src={slide_11} alt="本地优先架构" />
+
+本地优先最大的特点可能是在将数据库放在了设备本地，所以有天然的离线支持。并且理想情况下借助 CRDTs 或者其他类似技术在 P2P 条件下也能做到端到端加密协作。但是 P2P 可靠性目前很差，还有NAT防火墙阻止，所以中间还是要有中央服务器，但这个服务器只做转发，长期看会有通用的协议标准，这样后端部分就会被抽象成为一个统一的同步引擎服务，不同的同步算法都可以进行互操作。所以在本地优先架构下，后端服务器更像是一个一直在线的特殊客户端。本地数据就是状态的唯一真实来源，所以前端状态管理也就更加简单。你可以像开发本地应用一样开发协作应用。
+
+<Image src={slide_12} alt="本地优先的开发者体验" />
+
+现在回过头再看这些开发者体验就更加容易说明了。
+
+<Image src={slide_13} alt="本地优先的简单架构" />
+
+简单的架构，刚刚已经谈到了。大多时候开发原型功能时，你一开始完全不需要准备后端，所以可以非常快速地构建出
+prototype 并且通过 CRDTs 或者类似的技术就能拥有开箱即用的多人协作。
+
+<Image src={slide_14} alt="本地优先的状态管理" />
+大家应该听过 [Linear](https://linear.app) 项目管理软件。Linear 的 co-founder Tuomas
+Artman 在 [2024 Local-first Conf](https://www.localfirstconf.com/) 上 分享了 Linear
+在使用本地优先架构上的经验 [[Youtube](https://www.youtube.com/watch?v=VLgmjzERT08)]，其中就提到状态管理的部分。如果从服务器请求，就需要处理网络错误、Loading、本地缓存的更新还有不同状态UI之间的变换。
+
+<Image src={slide_15} alt="本地优先的状态管理" />
+
+但是使用本地优先架构，数据都在本地，就可以简单地通过一行代码把内容直接显示在 UI 上，因为本地状态是永远一致的。另外 Linear 在分享时提到，他们的欧洲数据服务器只需要 2 核 CPU 就可以处理 1000 左右的并发，每个月仅需 80 美金的成本。这是本地优先对企业和开发者的一个巨大好处。
+
+<Image src={slide_16} alt="本地优先的好处：无需多处定义 Schema" />
+
+如果你将服务端视为一个特殊的客户端，那么开发的细节就会变得十分简单。因为前后端是同构的都使用一样的数据模型。
+
+[DXOS](https://dxos.org/) 的 Jess Martion 分享了一个 case [[Youtube](https://youtu.be/_GBpPp92L2M?si=VMEF6Ha8Hw0CuHSh)]，为最简单的表单 schema 增加一个字段，基于云的架构需要 UI、DB、API、前端类型等等地方修改类似的事情。但本地优先的话，就可以在定义数据的地方一次修改。
+
+并且对于本地优先来讲，本地更新和远端更新是没有本质区别的，如果每个客户端的操作的集合是一样的，那么他们的状态就会是一样的。所以在调试 Debug 时，你就可以对着这样的操作集合来模拟。并不需要模拟某种延迟或者是特殊的数据。
+
+<Image src={slide_17} alt="本地优先的好处：心智负担低" />
+
+上述这些开发者体验共同使得开发者的心智负担降低，不需要花太多时间考虑业务之外的事情。
+
+例如 [Jazz](https://jazz.tools/) 的 Anselm Eikhoff 自己开发了一个定时发送社交媒体的APP[[Youtube](https://youtu.be/n-Y8sSya6gk?si=TXf_AyBl7L4-IihI)]。在之前使用的标准的架构，80% 的时间在考虑分布式架构，后端如何部署，怎么添加扩展性。剩下 20% 才在真正考虑UI、UX和数据模型。切换到本地优先之后，他几乎不用考虑架构和部署的事情，交给本地优先的 infra 。剩下99%时间专注于设计数据和优化体验。
+
+<Image src={slide_18} alt="本地优先当前的局限" />
+
+说了那么多优点，当然没有银弹。本地优先当前仍有很多的局限。
+
+首先本地优先的模式还很新，大家还在探索什么样子会是最好的，定义也在不断演进。本地优先的软件还非常少，因为更多人不知道怎么构建本地优先软件，还没有一个广泛的解决方案，缺少一个前文提到的统一的同步协议。
+
+其余还有几项算是去中心化架构本身的一些问题，难以实现细粒的权限控制，无法强制用户不能做某事，因为数据就在用户本地而且没有中心化的权威决策。目前的大部分算法处理 Partial Sync 是困难的，甚至整个操作历史记录都需要完整加载到内存。 Schema Migration 也不容易，因为在支持离线的分布式环境中，数据的版本可能会有很多，需要考虑如何处理不同版本的数据。
+
+<Image src={slide_19} alt="本地优先当前的局限" />
+
+虽然当前有这些局限，但是有很多创业公司和学者在一起探索，而且大部分问题并不是不可解决的。
+
+<Image src={slide_20} alt="AI + 本地优先，人人都是程序员" />
+
+互联网时代，人人都是产品经理。AI 时代，人人都是程序员。最后我想讨论的是在这个可能人人都是程序员的时代下本地优先会扮演怎样一个角色。
+
+<Image src={slide_21} alt="赤脚程序员" />
+
+Maggie Appleton 在她的[博客](https://maggieappleton.com/home-cooked-software) [[Youtube](https://youtu.be/qo5m92-9_QI?si=OApZn5vqoNP2lOtT)] 中提出在终端用户和专业程序员之间，还有一部分人群。她用赤脚医生来类比这群人，将他们称为赤脚程序员，用以形容没有经过专业训练，但是擅于利用工具来解决自己周边的问题的人群。
+
+<Image src={slide_22} alt="赤脚程序员2" />
+
+但他们由于职业等原因没有时间专注于学习编程，被 GIT、命令行、计算机底层细节等挡在专业编程之外，但给他们更好工具他们可以解决更多那些软件公司并不关心的甚至无法盈利的长尾需求。
+
+<Image src={slide_23} alt="长尾需求" />
+
+举个不算太恰当的例子像拼多多，抖音，其实一定程度上都是抓住了之前没有被看到的长尾需求，满足了更多人的需要。那么本地优先会在 AI 时代发挥什么作用？
+
+<Image src={slide_24} alt="本地优先为什么是重要的" />
+
+这里我简单画了一个图，横轴是技术能力，纵轴是对应计算机应用能够解决的问题数量，其中绿色的范围就是刚刚提到的那些潜在长尾需求。在中间的某一个地方一定会存在一个陡增的位置，因为在此之前我可以不断使用各种 No Code 软件来处理可能只属于我的特定需求。
+
+当需求更加复杂，希望更多定制功能时，那就需要更多编程技术能力。
+
+<Image src={slide_25} alt="复杂需求最低技术要求线" />
+
+那我把这条线称为 **复杂需求最低技术要求线**。
+
+在如今的 AI 时代，我相信逐渐会有更好用的软件让更多不会编程的人也能够开发定制化需求的应用。但是现在的软件架构对于复杂需求来讲真的很复杂，例如离线使用，例如多人协作。AI 可能短时间没办法很好处理这类问题。所以你可能需要本地优先。
+**AI 降低技术门槛，本地优先简化问题难度。**
+
+<Image src={slide_26} alt="本地优先为什么是重要的" />
+
+使得这条线可以更进一步地向左移动。让更多的长尾需求可以通过拜托周围那些赤脚程序员来帮忙解决。
+
+<Image src={slide_27} alt="本地优先定义" />
+最后，我以 Martin Kleppmann 最新的[对本地优先的描述](https://youtu.be/NMq0vncHJvU?si=b-JiC0XaNiMq0McW)来结尾。
+
+In local-first software, the availability of another computer should never prevent you from working.
+<div style={{display:"flex", justifyContent: "center"}}>
+
+**你的事情应该<span style={{color: "red"}}>永远不会被</span><span style={{color: "cyan"}}>其他计算机</span>的可用性<span style={{color: "red"}}>影响。</span>**
+
+</div>

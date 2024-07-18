@@ -1,0 +1,9 @@
+---
+const { slide, alt, content } = Astro.props;
+import { Image } from "astro:assets";
+---
+
+<div class="flex">
+  <img class="flex-1" src={slide} alt={alt} />
+  <div class="flex-1">{content}</div>
+</div>
