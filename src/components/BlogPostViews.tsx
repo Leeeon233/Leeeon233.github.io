@@ -25,7 +25,6 @@ const BlogPostViews = ({
           method: increment ? "POST" : "GET",
         })
           .then((res) => {
-            console.log(res);
             return res.json();
           })
           .then((data) => {
