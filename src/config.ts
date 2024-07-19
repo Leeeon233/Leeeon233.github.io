@@ -5,7 +5,7 @@ export const SITE: Site = {
   author: "Leon Zhao",
   desc: "Share things about local-first software, web development, AI, hardware and more.",
   title: "leon7hao",
-  ogImage: "astropaper-og.jpg",
+  ogImage: "og.png",
   lightAndDarkMode: true,
   postPerPage: 10,
   scheduledPostMargin: 15 * 60 * 1000, // 15 minutes
