@@ -24,10 +24,11 @@ const BlogPostViews = ({
         fetch(`${import.meta.env.PUBLIC_API_URL}/views/${slug}`, {
           method: increment ? "POST" : "GET",
         })
-          .then(res => {
+          .then((res) => {
+            console.log(res);
             return res.json();
           })
-          .then(data => {
+          .then((data) => {
             setViews(data.count);
           });
       }
